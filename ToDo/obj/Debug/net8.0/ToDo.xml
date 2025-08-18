@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ToDo</name>
+    </assembly>
+    <members>
+        <member name="T:ToDo.Extensions.BlazorExtensions">
+            <summary>
+            Настройка расширений blazor
+            </summary>
+        </member>
+        <member name="M:ToDo.Extensions.BlazorExtensions.ConfigureBlazor(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Настройка сервиоов Blazor
+            </summary>
+            <param name="services">Билдер контейнера IoC</param>
+            <returns>Билдер контейнера IoC</returns>
+        </member>
+        <member name="M:ToDo.Extensions.BlazorExtensions.ConfigureBlazor(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder)">
+            <summary>
+            Регистрация middleware для blazor
+            </summary>
+            <param name="app">Построитель путей запроса</param>
+            <returns>Построитель путей запроса</returns>
+        </member>
+        <member name="T:ToDo.Extensions.DiExtensions">
+            <summary>
+            Расширения IoC
+            </summary>
+        </member>
+        <member name="M:ToDo.Extensions.DiExtensions.RegisterMisc(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Регистрирует вспомогательные сервисы
+            </summary>
+            <param name="services">Билдер контейнера IoC</param>
+            <returns>Билдер контейнера IoC</returns>
+        </member>
+        <member name="M:ToDo.Extensions.DiExtensions.ConfigureOptions(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Конфигурация IOptions
+            </summary>
+            <param name="services">Билдер контейнера IoC</param>
+            <param name="configuration">Конфигурация</param>
+            <returns>Билдер контейнера IoC</returns>
+        </member>
+        <member name="T:ToDo.Models.BaseOutputModel">
+            <summary>
+            Базовая модель
+            </summary>
+        </member>
+        <member name="P:ToDo.Models.BaseOutputModel.IsDeleted">
+            <summary>
+            Является ли удаленным
+            </summary>
+        </member>
+        <member name="T:ToDo.Models.MappingProfile">
+            <summary>
+            Настройки автомапера для моделей
+            </summary>
+        </member>
+        <member name="T:ToDo.Models.UserTaskAddModel">
+            <summary>
+            Данные задачи для добавления
+            </summary>
+        </member>
+        <member name="P:ToDo.Models.UserTaskAddModel.Name">
+            <summary>
+            Имя
+            </summary>
+            <remarks>Обязательно</remarks>
+        </member>
+        <member name="P:ToDo.Models.UserTaskAddModel.Description">
+            <summary>
+            Описание
+            </summary>
+        </member>
+        <member name="T:ToDo.Models.UserTaskListAddModel">
+            <summary>
+            Данные списка задач для добавления
+            </summary>
+        </member>
+        <member name="P:ToDo.Models.UserTaskListAddModel.Name">
+            <summary>
+            Имя
+            </summary>
+            <remarks>Обязательно</remarks>
+        </member>
+        <member name="T:ToDo.Models.UserTaskListModel">
+            <summary>
+            Возвращаемые данные для списка задач
+            </summary>
+        </member>
+        <member name="P:ToDo.Models.UserTaskListModel.Id">
+            <summary>
+            Идентификатор
+            </summary>
+            <remarks>Обязательно</remarks>
+        </member>
+        <member name="P:ToDo.Models.UserTaskListModel.Name">
+            <summary>
+            Имя
+            </summary>
+            <remarks>Обязательно</remarks>
+        </member>
+        <member name="P:ToDo.Models.UserTaskListModel.IsDeleted">
+            <summary>
+            Признак удаления
+            </summary>
+        </member>
+        <member name="T:ToDo.Models.UserTaskModel">
+            <summary>
+            Возвращаемые данные задачи
+            </summary>
+        </member>
+        <member name="P:ToDo.Models.UserTaskModel.Id">
+            <summary>
+            Идентификатор
+            </summary>
+            <remarks>Обязательно</remarks>
+        </member>
+        <member name="P:ToDo.Models.UserTaskModel.Name">
+            <summary>
+            Имя
+            </summary>
+            <remarks>Обязательно</remarks>
+        </member>
+        <member name="P:ToDo.Models.UserTaskModel.Description">
+            <summary>
+            Описание
+            </summary>
+        </member>
+        <member name="T:ToDo.Models.UserTaskSmallModel">
+            <summary>
+            Возвращаемые сокращенные данные задачи для списков
+            </summary>
+        </member>
+        <member name="P:ToDo.Models.UserTaskSmallModel.Name">
+            <summary>
+            Название
+            </summary>
+        </member>
+        <member name="P:ToDo.Models.UserTaskSmallModel.IsCompleted">
+            <summary>
+            Признак выполненности
+            </summary>
+        </member>
+        <member name="P:ToDo.Models.UserTaskSmallModel.IsDeleted">
+            <summary>
+            Пизнак удаленности
+            </summary>
+        </member>
+        <member name="T:ToDo.Options.ServicesOptions">
+            <summary>
+            Адреса конечных точек сервисов
+            </summary>
+        </member>
+        <member name="P:ToDo.Options.ServicesOptions.WebApi">
+            <summary>
+            Заглушка для монолита
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,9 @@
+@using ToDo.Models
+<div class="inner-area">
+    <span class="text-content">@Model.Name</span>
+</div>
+
+@code {
+    [Parameter] 
+    public UserTaskSmallModel Model { get; set; }
+}

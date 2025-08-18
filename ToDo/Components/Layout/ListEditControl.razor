@@ -1,0 +1,28 @@
+@using ToDo.Models
+@inject HttpClient Http;
+
+<div class="nav-item px-3">
+    <div @onclick="RenameListAsync">Rename list</div>
+    <div @onclick="DeleteListAsync">Delete list</div>
+    
+    
+</div>
+
+@code {
+    
+    [Parameter]
+    public UserTaskListModel Model { get; set; }
+
+    [Parameter]
+    public EventHandler<EventArgs> RenameCalledEvent { get; set; }
+    
+    async Task RenameListAsync()
+    {
+        RenameCalledEvent?.Invoke(new EventArgs(), null);
+    }
+
+    private async Task DeleteListAsync()
+    {
+        await Http.DeleteAsync($"TaskList/{Model.Id}");
+    }
+}

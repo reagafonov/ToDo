@@ -1,0 +1,211 @@
+services:
+ 
+  broker:
+    image: confluentinc/cp-kafka:8.0.0
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: SASL_SSL://broker:9093, CONTROLLER://broker:9094
+      KAFKA_ADVERTISED_LISTENERS: SASL_SSL://localhost:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: SASL_SSL:SASL_SSL,CONTROLLER:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@broker:9094
+      KAFKA_INTER_BROKER_LISTENER_NAME: SASL_SSL
+      KAFKA_BROKER_ID: 1
+      CLUSTER_ID: T4mCQpLUTdeM4B_rP4YHGA
+   
+      KAFKA_SSL_KEYSTORE_FILENAME: kafka.keystore.jks
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: keystore_creds
+      KAFKA_SSL_KEY_CREDENTIALS: sslkey_creds
+     
+      KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.truststore.jks
+      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: truestore_creds
+      
+      KAFKA_SASL_ENABLED_MECHANISMS: SCRAM-SHA-512
+      KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: SCRAM-SHA-512
+      KAFKA_OPTS: >
+        -Djava.security.auth.login.config=/etc/kafka/kafka_server_jaas.conf
+        
+#      KAFKA_SSL_KEYSTORE_PASSWORD: changeit
+#
+#      KAFKA_SSL_TRUSTSTORE_FILE: /bitnami/kafka/config/certs/kafka.truststore.jks
+    volumes:
+      - ./certs:/etc/kafka/secrets:ro
+      - ./jaas/kafka_server_jaas.conf:/etc/kafka/kafka_server_jaas.conf:ro
+   
+    healthcheck:
+     test: nc -z localhost 9093 || exit -1
+     start_period: 15s
+     interval: 5s
+     timeout: 10s
+     retries: 10
+  frontend:
+   image: frontend
+   ports:
+     - 80:80
+   build:
+     context: PredReys.Frontend/PredReys.Frontend
+     dockerfile: Dockerfile
+  db_way_bills:
+   image: postgres:17.2-bookworm
+   hostname: db_way_bills
+   ports:
+     - 5432:5432
+   environment:
+     POSTGRES_PASSWORD: "qwerty"
+     PGDATA: "/var/lib/postgresql/data/pgdata"
+     ServiceBusOptions__BootstrapServers: broker:9093
+   #    volumes:
+   #      - db_order_data:/var/lib/postgresql/data/pgdata
+   healthcheck:
+     test: [ "CMD-SHELL", "pg_isready", "-d", "db_prod" ]
+     interval: 30s
+     timeout: 60s
+     retries: 5
+     start_period: 80s
+ 
+# audit:
+#   image: audit
+#   ports:
+#     - 8082:8080
+#   build:
+#     context: PredReys.Audit
+#     dockerfile: Dockerfile
+#   environment:
+#     DbConnectionString: "Host=db_way_bills;Port=5432;Database=Audit;Username=postgres;Password=qwerty; Include Error Detail=true"
+#     Keycloak__auth-server-url: "http://authorization:81/"
+#   depends_on:
+#     db_way_bills:
+#       condition: service_healthy
+  authorization:
+   image: auth
+   ports:
+     - "81:80"
+   build:
+     context: PredReys.Authorization
+     dockerfile: Dockerfile
+   environment:
+     DbConnectionString: "Host=db_way_bills;Port=5432;Database=Authorization;Username=postgres;Password=qwerty; Include Error Detail=true"
+     ServiceBusOptions__BootstrapServers: broker:9093   
+   volumes:
+     - ./certs/YandexCA.pem:/app/YandexCA.pem:ro
+   depends_on:
+     db_way_bills:
+       condition: service_healthy
+  
+  company_balance:
+   image: company_balance
+   ports:
+     - 8083:8080
+   build:
+     context: PredReys.CompanyBalance
+     dockerfile: Dockerfile
+   environment:
+     DbConnectionString: "Host=db_way_bills;Port=5432;Database=CompanyBalance;Username=postgres;Password=qwerty; Include Error Detail=true"
+     Keycloak__auth-server-url: "http://authorization:81/"
+     ServiceBusOptions__BootstrapServers: broker:9093
+   volumes:
+     - ./certs/YandexCA.pem:/app/YandexCA.pem:ro
+   depends_on:
+     db_way_bills:
+       condition: service_healthy
+  gotenberg:
+   image: gotenberg/gotenberg:8
+   ports:
+       - 3000:3000
+   
+  documents:
+   image: documents
+   ports:
+     - 8087:8080
+   build:
+     context: PredReys.Documents
+     dockerfile: Dockerfile
+   environment:
+     DbConnectionString: "Host=db_way_bills;Port=5432;Database=Documents;Username=postgres;Password=qwerty; Include Error Detail=true"
+     Keycloak__auth-server-url: "http://authorization:81/"
+     PredReysNsiOptions__Uri: "http://nsi:8085"
+     GotenbergSharpClient__ServiceUrl: "http://gotenberg:3000/"
+     GotenbergSharpClient__HealthCheckUrl: "http://gotenberg:3000/health"
+     ServiceBusOptions__BootstrapServers: broker:9093
+   volumes:
+     - ./certs/YandexCA.pem:/app/YandexCA.pem:ro
+   depends_on:
+     db_way_bills:
+       condition: service_healthy
+  notifications:
+   image: notifications
+   ports:
+     - 8084:8080
+   build:
+     context: PredReys.Notifications
+     dockerfile: Dockerfile
+   environment:
+     DbConnectionString: "Host=db_way_bills;Port=5432;Database=Notifications;Username=postgres;Password=qwerty; Include Error Detail=true"
+     Keycloak__auth-server-url: "http://authorization:81/"
+     PredReysNsiOptions__Uri: "http://nsi:8085"
+     ServiceBusOptions__BootstrapServers: broker:9093
+   volumes:
+     - ./certs/YandexCA.pem:/app/YandexCA.pem:ro
+   depends_on:
+     db_way_bills:
+       condition: service_healthy
+  nsi:
+    image: nsi
+    ports:
+      - 8085:8080
+    build:
+      context: PredReys.Nsi
+      dockerfile: Dockerfile
+    environment:
+       DbConnectionString: "Host=db_way_bills;Port=5432;Database=Nsi;Username=postgres;Password=qwerty; Include Error Detail=true"
+       Keycloak__auth-server-url: "http://authorization:81/"
+       ServiceBusOptions__BootstrapServers: broker:9093
+#       ServiceBusOptions__BootstrapServers: "broker:9093"
+#       ServiceBusOptions__ClientId: "PredReys.Nsi.Stage"
+#       "ServiceBusOptions__GroupId": "Nsi.Stage"
+#       "ServiceBusOptions__SaslUsername": "PredReysNsi"
+#       "ServiceBusOptions__SaslPassword": "oiuwehruihwueyh73ytgyusdS"
+    volumes:
+      - ./certs/YandexCA.pem:/app/YandexCA.pem:ro
+    depends_on:
+     db_way_bills:
+       condition: service_healthy
+     broker:
+       condition: service_healthy
+  rates:
+   image: rates
+   ports:
+     - 8086:8080
+   build:
+     context: PredReys.Rates
+     dockerfile: Dockerfile
+   environment:
+     DbConnectionString: "Host=db_way_bills;Port=5432;Database=Rates;Username=postgres;Password=qwerty; Include Error Detail=true"
+     Keycloak__auth-server-url: "http://authorization:81/"
+   volumes:
+     - ./certs/YandexCA.pem:/app/YandexCA.pem:ro
+   depends_on:
+     db_way_bills:
+       condition: service_healthy
+  way_bills:
+   image: way_bills
+   ports:
+     - 8080:8080
+   build:
+     context: PredReys.WayBills
+     dockerfile: Dockerfile
+   environment:
+     DbConnectionString: "Host=db_way_bills;Port=5432;Database=WayBills;Username=postgres;Password=qwerty; Include Error Detail=true"
+     Keycloak__auth-server-url: "http://authorization:81/"
+     ServiceBusOptions__BootstrapServers: broker:9093
+   volumes:
+     - ./certs/YandexCA.pem:/app/YandexCA.pem:ro
+   depends_on:
+     db_way_bills:
+       condition: service_healthy
+
+
+
+
+

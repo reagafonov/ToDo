@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/romanagafonov/_To_Do_/ToDo/ToDo/obj/Debug/net8.0/scopedcss/projectbundle/ToDo.bundle.scp.css",
+      "PackagePath": "staticwebassets/ToDo.bundle.scp.css"
+    },
+    {
+      "Id": "/Users/romanagafonov/_To_Do_/ToDo/ToDo/wwwroot/app.css",
+      "PackagePath": "staticwebassets/app.css"
+    },
+    {
+      "Id": "/Users/romanagafonov/_To_Do_/ToDo/ToDo/wwwroot/bootstrap/bootstrap.min.css",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css"
+    },
+    {
+      "Id": "/Users/romanagafonov/_To_Do_/ToDo/ToDo/wwwroot/bootstrap/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css.map"
+    },
+    {
+      "Id": "/Users/romanagafonov/_To_Do_/ToDo/ToDo/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.ToDo.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.ToDo.props",
+      "PackagePath": "build\\ToDo.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.ToDo.props",
+      "PackagePath": "buildMultiTargeting\\ToDo.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.ToDo.props",
+      "PackagePath": "buildTransitive\\ToDo.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

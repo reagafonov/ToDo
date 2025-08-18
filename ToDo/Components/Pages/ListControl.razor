@@ -1,0 +1,68 @@
+@* @page "/list-editing" *@
+@* @using System.Reflection.Metadata *@
+@* @using AutoMapper *@
+@* @using ToDo.Models *@
+@* @inject IMapper Mapper *@
+@* *@
+@* @code { *@
+@* *@
+@*     [Parameter] *@
+@*     public UserTaskListModel Model { get; set; } *@
+@*      *@
+@*     [Parameter] *@
+@*     public ICollection<UserTaskSmallModel> Tasks { get; set; } *@
+@* *@
+@*     public bool Edit { get; set; } *@
+@* *@
+@*     private async Task OnBlurAsync(FocusEventArgs args) *@
+@*     { *@
+@*         if (!string.IsNullOrWhiteSpace(Model.Name)) *@
+@*         { *@
+@* *@
+@*             Model.Name = Model.Name.Trim(); *@
+@* *@
+@*             //небольшая задержка, необходимая для нормальной работы *@
+@*             await Task.Delay(100); *@
+@*             Edit = false; *@
+@*             if (Model.Id == default) *@
+@*                 Model.Id = await TaskListService.AddUserTaskListAsync(Mapper.Map<UserTaskListDto>(Model), default); *@
+@*             else *@
+@*                 await TaskListService.UpdateUserTaskListAsync(Mapper.Map<UserTaskListDto>(Model), default); *@
+@*         } *@
+@* *@
+@*         StateHasChanged(); *@
+@*     } *@
+@*      *@
+@*     private void OnFocus() *@
+@*     { *@
+@*         Edit = true; *@
+@*         StateHasChanged(); *@
+@*     } *@
+@* } *@
+@* *@
+@* <!-- Область 1 --> *@
+@* <div class="main-area"> *@
+@*     <!-- Области 2 --> *@
+@*     <div class="sub-area"> *@
+@*         <div class="header"> *@
+@*             <div class="input-container"> *@
+@*                 @if (Edit) *@
+@*                 { *@
+@*                     <input type="text" class="header-input" placeholder="Введите название" @bind="Model.Name" @onblur="OnBlurAsync" > *@
+@*                 } *@
+@*                 else *@
+@*                 { *@
+@*                     <span @onclick="OnFocus" class="text-content">@Model.Name</span> *@
+@*                 } *@
+@*                  *@
+@*             </div> *@
+@*         </div> *@
+@*         <div class="content-area"> *@
+@*             <!-- Области 3 --> *@
+@*             @foreach (UserTaskSmallModel task in Tasks) *@
+@*             { *@
+@*                 <TaskControl Model="task"></TaskControl> *@
+@*             } *@
+@*         </div> *@
+@*     </div> *@
+@* </div> *@

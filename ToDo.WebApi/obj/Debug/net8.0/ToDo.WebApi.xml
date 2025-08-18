@@ -1,0 +1,1188 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ToDo.WebApi</name>
+    </assembly>
+    <members>
+        <member name="T:ToDo.WebApi.Abstractions.BaseEntity">
+            <summary>
+            Общие свойства сущностей
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Abstractions.BaseEntity.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Abstractions.BaseEntity.IsDeleted">
+            <summary>
+            Признак удаления
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Abstractions.BaseEntity.OwnerUserId">
+            <summary>
+            Идентификатор владельца
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Abstractions.FiltersData.BaseFilterData">
+            <summary>
+            Общие данные фильтра
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Abstractions.FiltersData.BaseFilterData.Page">
+             <summary>
+             Страница
+             </summary>
+             <remarks>
+            Если страница пустая то, если включена пагинация, то считается первой
+             </remarks>
+        </member>
+        <member name="P:ToDo.WebApi.Abstractions.FiltersData.BaseFilterData.PageSize">
+            <summary>
+            Размер страницы
+            </summary>
+            <remarks>Если не установлена, то пагинация выключена</remarks>
+        </member>
+        <member name="T:ToDo.WebApi.Abstractions.FiltersData.IAuthorizationFilter`1">
+            <summary>
+            Фильтр авторизации
+            </summary>
+            <typeparam name="TEntity">Сущность</typeparam>
+        </member>
+        <member name="M:ToDo.WebApi.Abstractions.FiltersData.IAuthorizationFilter`1.ApplyAuthorization(System.Linq.IQueryable{`0})">
+            <summary>
+            Добавляет фильтр для записей доступных пользователю
+            </summary>
+            <param name="queryable">Запрос</param>
+            <returns>Отфильтрованный запрос или null если доступ к данным запрещен</returns>
+        </member>
+        <member name="T:ToDo.WebApi.Abstractions.FiltersData.IFilter`2">
+            <summary>
+            Интерфейс универсального фильтра для универсального репозитория
+            </summary>
+            <typeparam name="TEntity">Класс сущности</typeparam>
+            <typeparam name="TFilterData">Класс данных фильтра</typeparam>
+        </member>
+        <member name="M:ToDo.WebApi.Abstractions.FiltersData.IFilter`2.Apply(`1,System.Linq.IQueryable{`0})">
+            <summary>
+            Возвращает запрос с примененным фильтром
+            </summary>
+            <param name="filterData">Данные фильтра</param>
+            <param name="queryable">Исходный запрос</param>
+            <returns>Запрос с примененным фильтром</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Abstractions.IRepository`2.GetFilteredAsync(`1,System.Threading.CancellationToken)">
+            <summary>
+            Получение отфильтрованного списка сущностей
+            </summary>
+            <param name="filterData">Данные фильтра</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns></returns>
+        </member>
+        <member name="M:ToDo.WebApi.Abstractions.IRepository`2.GetAllAsync(System.Threading.CancellationToken)">
+            <summary>
+            Возвращает все задачи
+            </summary>
+            <returns>Все задачи</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Abstractions.IRepository`2.GetAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Получает задачу по id
+            </summary>
+            <param name="id">Идентификатор задачи</param>
+            <param name="cancellation">Токен отмены</param>
+            <returns>Найденная задачи или null</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Abstractions.IRepository`2.AddAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Добавляет задачу в хранилище
+            </summary>
+            <param name="entity">Сущность задачи</param>
+            <param name="cancellation">Токен отмены</param>
+        </member>
+        <member name="M:ToDo.WebApi.Abstractions.IRepository`2.UpdateAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Обновляет задачу в хранилище
+            </summary>
+            <param name="entity">Новые данные со старым идентификатором</param>
+            <param name="cancellation">Токен отмены</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ToDo.WebApi.Abstractions.IRepository`2.DeleteAsync(System.Guid,System.Threading.CancellationToken)" -->
+        <member name="M:ToDo.WebApi.Abstractions.IRepository`2.RestoreAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Восстановление задачи
+            </summary>
+            <param name="id">ID сущности</param>
+            <param name="cancellation">Токен отмены</param>
+            <returns></returns>
+        </member>
+        <member name="M:ToDo.WebApi.Abstractions.IRepository`2.DeleteAsync(System.Collections.Generic.IEnumerable{System.Guid},System.Threading.CancellationToken)">
+            <summary>
+            Удаляет набор задач
+            </summary>
+            <param name="ids">Идентификаторы сущности</param>
+            <param name="cancellation">Токен отмены</param>
+        </member>
+        <member name="T:ToDo.WebApi.Controllers.TaskController">
+            <summary>
+            Контроллер Web api для задач
+            </summary>
+            <param name="userTaskService">Сервис задач</param>
+            <param name="mapper">automapper</param>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskController.#ctor(ToDo.WebApi.ServiceAbstractions.IUserTaskService,AutoMapper.IMapper)">
+            <summary>
+            Контроллер Web api для задач
+            </summary>
+            <param name="userTaskService">Сервис задач</param>
+            <param name="mapper">automapper</param>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskController.GetUserTasks(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Получение данных задачи
+            </summary>
+            <param name="listId">Идентификатор списка</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Данные задачи</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskController.GetUserTask(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Получение подробной модели для задачи по идентификатору
+            </summary>
+            <param name="id">Идентификатор</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Подробная модель задачи</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskController.AddAsync(ToDo.WebApi.Models.UserTaskAddModel,System.Threading.CancellationToken)">
+            <summary>
+            Добавление задачи
+            </summary>
+            <param name="userTaskModel">Данные задачи</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Идентификатор новой задачи</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskController.Complete(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Пометка задачи как выполненной
+            </summary>
+            <param name="id">Идентификатор задачи</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskController.SetUncompletedAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Пометка задачи как невыполненной
+            </summary>
+            <param name="id">Идентификатор задачи</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskController.DeleteAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Удаление задачи
+            </summary>
+            <param name="id">Идентификатор задачи</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskController.DeleteAsync(System.Guid[],System.Threading.CancellationToken)">
+            <summary>
+            Удаление списка задач
+            </summary>
+            <param name="ids">Идентификаторы задач</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskController.UndeleteAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Восстановление удаленной задачи
+            </summary>
+            <param name="id">Идентификатор удаленной задачи</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="T:ToDo.WebApi.Controllers.TaskListController">
+            <summary>
+            Контроллер списков
+            </summary>
+            <param name="service">Сервис списков</param>
+            <param name="mapper">automapper</param>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskListController.#ctor(ToDo.WebApi.ServiceAbstractions.IUserTaskListService,AutoMapper.IMapper,Microsoft.Extensions.Logging.ILogger{ToDo.WebApi.Controllers.TaskListController},ToDo.WebApi.ServiceAbstractions.IUserService)">
+            <summary>
+            Контроллер списков
+            </summary>
+            <param name="service">Сервис списков</param>
+            <param name="mapper">automapper</param>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskListController.GetAllUndeletedTaskListsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получение всех неудаленных списков для пользователя
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Данные списков</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskListController.GetAllTaskListsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получение всех списков
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Данные списков</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskListController.AddTaskListAsync(ToDo.WebApi.Models.UserTaskListAddModel,System.Threading.CancellationToken)">
+            <summary>
+            Добавление писка задач
+            </summary>
+            <param name="taskListModel">Данные списка задач</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Идентификатор созданной задачи</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskListController.UpdateUserTaskList(System.Guid,ToDo.WebApi.Models.UserTaskListAddModel,System.Threading.CancellationToken)">
+            <summary>
+            Редактирование данных списка
+            </summary>
+            <param name="id">Идентификатор редактируемого списка</param>
+            <param name="taskListModel">Отредактированные данные</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:ToDo.WebApi.Controllers.TaskListController.DeleteUserTaskList(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Удаление списка
+            </summary>
+            <param name="id">Идентификатор удаляемого списка</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="T:ToDo.WebApi.Domain.DataContext">
+            <summary>
+            Контекст для работы с EntityFramework
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.DataContext.UserTasks">
+            <summary>
+            Пользовательские задачи
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.DataContext.UserTaskFiles">
+            <summary>
+            Файлы пользователя
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.DataContext.UserTaskLists">
+            <summary>
+            Списки задач
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Domain.DataContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Дополнительная инициализация
+            </summary>
+            <param name="modelBuilder"></param>
+        </member>
+        <member name="T:ToDo.WebApi.Domain.Entities.User">
+            <summary>
+            Данные пользователя после авторизации
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.User.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.User.Username">
+            <summary>
+            Имя пользователя
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.User.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.User.FirstName">
+            <summary>
+            Имя
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.User.LastName">
+            <summary>
+            Фамилия
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.User.CreatedAt">
+            <summary>
+            Дата создания
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Domain.Entities.UserTask">
+            <summary>
+            Задача
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.UserTask.Name">
+            <summary>
+            Название
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.UserTask.Description">
+            <summary>
+            Описание
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.UserTask.UserTaskListId">
+            <summary>
+            Идентификатор списка задач
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.UserTask.TypeUserTaskList">
+            <summary>
+            Список задач в котором находится задача
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.UserTask.IsCompleted">
+            <summary>
+            Признак выполнения
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Domain.Entities.UserTaskFile">
+            <summary>
+            Файлы
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.UserTaskFile.UserTaskId">
+            <summary>
+            Идентификатор задачи
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.UserTaskFile.UserTask">
+            <summary>
+            Задача
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.UserTaskFile.Name">
+            <summary>
+            Название
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.UserTaskFile.Contents">
+            <summary>
+            Создержание
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Domain.Entities.UserTaskList">
+            <summary>
+            Список пользователей
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.UserTaskList.Name">
+            <summary>
+            Название списка
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Domain.Entities.UserTaskList.UserTasks">
+            <summary>
+            Задачи списка
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Domain.EntityAccessRequirement">
+            <summary>
+            Определение требования
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Extensions.AuthorizationExtension">
+            <summary>
+            Реализует расширения авторизацуии
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.AuthorizationExtension.RegiserAuthorization(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Регистрирует политики авторизации
+            </summary>
+            <param name="services">Билдер контейнера IoC</param>
+            <returns>Билдер контейнера IoC</returns>
+        </member>
+        <member name="T:ToDo.WebApi.Extensions.BearerAuthentificationExtension">
+            <summary>
+            Расширения для работы с авторизацией/аутентификацией JwtBearer
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.BearerAuthentificationExtension.RegisterKeycloakAuthentication(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Настройка получения данных аутентификации через keycloak
+            </summary>
+            <param name="services">Билдер контейнера IoC</param>
+            <returns>Билдер контейнера IoC</returns>
+            <param name="configuration">Конфигурация</param>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.BearerAuthentificationExtension.UseKeycloakAuthentication(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Настройка получения данных аутентификации через keycloak
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ToDo.WebApi.Extensions.DiExtensions">
+            <summary>
+            Расширения IoC
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.DiExtensions.RegisterRepositories(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Подключение репозиториев
+            </summary>
+            <param name="services">Билдер контейнера IoC</param>
+            <returns>Билдер контейнера IoC</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.DiExtensions.RegisterAuthorizationFilters(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Регистрирует фильтры для авторизации сущностей
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.DiExtensions.RegisterServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Регистрация сервисов
+            </summary>
+            <param name="services">Билдер контейнера IoC</param>
+            <returns>Билдер контейнера IoC</returns>
+        </member>
+        <member name="T:ToDo.WebApi.Extensions.EndpointsExtensions">
+            <summary>
+            Работа с контроллерами
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.EndpointsExtensions.RegisterControllers(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Добавляет настройки контроллеров
+            </summary>
+            <param name="services">Билдер контейнера IoC</param>
+            <returns>Билдер контейнера IoC</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.EndpointsExtensions.RegisterControllers(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Регистрация контроллера
+            </summary>
+            <param name="app">Построитель последовательности обработки запроса</param>
+            <returns>Построитель последовательности обработки запроса</returns>
+        </member>
+        <member name="T:ToDo.WebApi.Extensions.EntityFrameworkExtensions">
+            <summary>
+            Расширения для регистрации EntityFramework
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.EntityFrameworkExtensions.RegisterEntityFramework(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Регистрация сервисоов EntityFramework
+            </summary>
+            <param name="services">Билдер контейнера IoC</param>
+            <returns>Билдер контейнера IoC</returns>
+            <param name="configuration">Конфигурация</param>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.EntityFrameworkExtensions.AutoApplyMigrations(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Автоматически применяет миграции
+            </summary>
+            <param name="app">Построитель последовательности обработки запроса</param>
+            <returns>Построитель последовательности обработки запроса</returns>
+        </member>
+        <member name="T:ToDo.WebApi.Extensions.LoggerExtensions">
+            <summary>
+            Настройка логгеров
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.LoggerExtensions.RegisterSerilogConfig(Microsoft.Extensions.Hosting.IHostBuilder)">
+            <summary>
+            Настройка Serilog из конфигурации
+            </summary>
+            <param name="services">Билдер хоста</param>
+            <returns>Билдер хоста </returns>
+            <example>builder.Host.RegisterSeq()</example>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.LoggerExtensions.RegisterSerilogConsole(Microsoft.Extensions.Hosting.IHostBuilder)">
+            <summary>
+            Настройка Serilog для консоли
+            </summary>
+            <param name="services">Билдер хоста</param>
+            <returns>Билдер хоста </returns>
+            <example>builder.Host.RegisterSeq()</example>
+        </member>
+        <member name="T:ToDo.WebApi.Extensions.OpenApiExtensions">
+            <summary>
+            Конфигурация OpenApiSwagger
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.OpenApiExtensions.RegisterSwagger(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Конфигурация сервисов Swagger
+            </summary>
+            <param name="services">Билдер контейнера IoC</param>
+            <returns>Билдер контейнера IoC</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.OpenApiExtensions.ConfigureSwagger(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            Регистрация middleware для swagger
+            </summary>
+            <param name="app">Построитель последовательности обработки запроса</param>
+            <returns>Построитель последовательности обработки запроса</returns>
+        </member>
+        <member name="T:ToDo.WebApi.Extensions.UserExtensions">
+            <summary>
+            Расширения для работы с данными пользователей
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Extensions.UserExtensions.GetUserId(System.Security.Claims.ClaimsPrincipal)">
+            <summary>
+            Получение идентификатора пользователея из Jwt
+            </summary>
+            <param name="principal">Данные о пользователе</param>
+            <returns>Идентификатор пользователя, если есть</returns>
+        </member>
+        <member name="T:ToDo.WebApi.Middleware.EntityAccessHandler">
+            <summary>
+            Регулирует дотуп к сущностям
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Middleware.EntityAccessHandler.#ctor(ToDo.WebApi.ServiceAbstractions.IUserService)">
+            <summary>
+            Регулирует дотуп к сущностям
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Middleware.EntityAccessHandler.HandleRequirementAsync(Microsoft.AspNetCore.Authorization.AuthorizationHandlerContext,ToDo.WebApi.Domain.EntityAccessRequirement)">
+            <summary>
+            Проверка дот
+            </summary>
+            <param name="context"></param>
+            <param name="requirement"></param>
+            <exception cref="T:System.UnauthorizedAccessException"></exception>
+        </member>
+        <member name="T:ToDo.WebApi.Middleware.ErrorHandlingMiddleware">
+            <summary>
+            Возвращает коды вместо ошибкок
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Middleware.ErrorHandlingMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Logging.ILogger{ToDo.WebApi.Middleware.ErrorHandlingMiddleware})">
+            <summary>
+            Конструктор
+            </summary>
+            <param name="next"/>Следующий обработчик в цепочке, там должна быть бизнес логика/param>
+            <param name="logger">логгер</param>
+        </member>
+        <member name="M:ToDo.WebApi.Middleware.ErrorHandlingMiddleware.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Перехват исключений
+            </summary>
+            <param name="context">Контекст</param>
+        </member>
+        <member name="M:ToDo.WebApi.Middleware.ErrorHandlingMiddleware.Handle404ExceptionAsync(Microsoft.AspNetCore.Http.HttpContext,System.Exception)">
+            <summary>
+            Вывод для ошибки 404
+            </summary>
+            <param name="context">контекст</param>
+            <param name="ex">Полученное исключение</param>
+            <returns></returns>
+        </member>
+        <member name="M:ToDo.WebApi.Middleware.ErrorHandlingMiddleware.Handle5xxExceptionAsync(Microsoft.AspNetCore.Http.HttpContext,System.Exception)">
+            <summary>
+            Вывод для ошибки 5xx
+            </summary>
+            <param name="context">контекст</param>
+            <param name="ex">Полученное исключение</param>
+            <returns></returns>
+        </member>
+        <member name="M:ToDo.WebApi.Middleware.ErrorHandlingMiddleware.HandleUnauthorizedExceptionAsync(Microsoft.AspNetCore.Http.HttpContext,System.Exception)">
+            <summary>
+            Вывод для неавторизованных данных
+            </summary>
+            <param name="context">контекст</param>
+            <param name="ex">Полученное исключение</param>
+            <returns></returns>
+        </member>
+        <member name="T:ToDo.WebApi.Models.BaseOutputModel">
+            <summary>
+            Базовая модель
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Models.BaseOutputModel.IsDeleted">
+            <summary>
+            Является ли удаленным
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Models.MappingProfile">
+            <summary>
+            Настройки автомапера для моделей
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Models.UserTaskAddModel">
+            <summary>
+            Данные задачи для добавления
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Models.UserTaskAddModel.Name">
+            <summary>
+            Имя
+            </summary>
+            <remarks>Обязательно</remarks>
+        </member>
+        <member name="P:ToDo.WebApi.Models.UserTaskAddModel.Description">
+            <summary>
+            Описание
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Models.UserTaskListAddModel">
+            <summary>
+            Данные списка задач для добавления
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Models.UserTaskListAddModel.Name">
+            <summary>
+            Имя
+            </summary>
+            <remarks>Обязательно</remarks>
+        </member>
+        <member name="T:ToDo.WebApi.Models.UserTaskListModel">
+            <summary>
+            Возвращаемые данные для списка задач
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Models.UserTaskListModel.Id">
+            <summary>
+            Идентификатор
+            </summary>
+            <remarks>Обязательно</remarks>
+        </member>
+        <member name="P:ToDo.WebApi.Models.UserTaskListModel.Name">
+            <summary>
+            Имя
+            </summary>
+            <remarks>Обязательно</remarks>
+        </member>
+        <member name="P:ToDo.WebApi.Models.UserTaskListModel.IsDeleted">
+            <summary>
+            Признак удаления
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Models.UserTaskModel">
+            <summary>
+            Возвращаемые данные задачи
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Models.UserTaskModel.Id">
+            <summary>
+            Идентификатор
+            </summary>
+            <remarks>Обязательно</remarks>
+        </member>
+        <member name="P:ToDo.WebApi.Models.UserTaskModel.Name">
+            <summary>
+            Имя
+            </summary>
+            <remarks>Обязательно</remarks>
+        </member>
+        <member name="P:ToDo.WebApi.Models.UserTaskModel.Description">
+            <summary>
+            Описание
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Models.UserTaskSmallModel">
+            <summary>
+            Возвращаемые сокращенные данные задачи для списков
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Models.UserTaskSmallModel.Name">
+            <summary>
+            Название
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Models.UserTaskSmallModel.IsCompleted">
+            <summary>
+            Признак выполненности
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Models.UserTaskSmallModel.IsDeleted">
+            <summary>
+            Пизнак удаленности
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Options.ServicesOptions">
+            <summary>
+            Адреса конечных точек сервисов
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Options.ServicesOptions.All">
+            <summary>
+            Заглушка для монолита
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Repos.BaseFilter`2">
+            <summary>
+            Общий фильтр для всех сущностей, применяет подфильтры и пагинацию
+            </summary>
+            <param name="partialFilters">Подфильтры</param>
+            <typeparam name="TEntity">Тип сущности</typeparam>
+            <typeparam name="TFilterData">Тип данных фильтра репозитория</typeparam>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.BaseFilter`2.#ctor(System.Collections.Generic.IEnumerable{ToDo.WebApi.Repos.CommonFilters.ICommonFilter{`0,`1}})">
+            <summary>
+            Общий фильтр для всех сущностей, применяет подфильтры и пагинацию
+            </summary>
+            <param name="partialFilters">Подфильтры</param>
+            <typeparam name="TEntity">Тип сущности</typeparam>
+            <typeparam name="TFilterData">Тип данных фильтра репозитория</typeparam>
+        </member>
+        <member name="T:ToDo.WebApi.Repos.CommonFilters.AuthorizationCommonFilterAdapter`2">
+            <summary>
+            Адаптер для постановки в очередь фильтра авторизации в цепочку базовых фильтров
+            </summary>
+            <param name="authorizationFilter">Фильтр авторизации определенный для сущности или общий</param>
+            <typeparam name="TEntity">Тип сущности</typeparam>
+            <typeparam name="TFilterData">Тип данных фильтра репозитория</typeparam>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.CommonFilters.AuthorizationCommonFilterAdapter`2.#ctor(ToDo.WebApi.Abstractions.FiltersData.IAuthorizationFilter{`0})">
+            <summary>
+            Адаптер для постановки в очередь фильтра авторизации в цепочку базовых фильтров
+            </summary>
+            <param name="authorizationFilter">Фильтр авторизации определенный для сущности или общий</param>
+            <typeparam name="TEntity">Тип сущности</typeparam>
+            <typeparam name="TFilterData">Тип данных фильтра репозитория</typeparam>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.CommonFilters.AuthorizationCommonFilterAdapter`2.ApplyPart(`1,System.Linq.IQueryable{`0})">
+            <summary>
+            Применяет зарегистрированный подфильтр авторизации
+            </summary>
+            <param name="filterData">Данные фильтра репозитория. Не используются</param>
+            <param name="queryable">Запрос</param>
+            <returns>Отфильтрованный запрос или null, если доступ к данным запрещен</returns>
+        </member>
+        <member name="T:ToDo.WebApi.Repos.CommonFilters.CommonAuthorizationFilter`1">
+            <summary>
+            Базовый фильтр данных по пользователям и ролям
+            </summary>
+            <param name="httpContextAccessor">Контекст</param>
+            <typeparam name="TEntity">Сущность</typeparam>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.CommonFilters.CommonAuthorizationFilter`1.#ctor(Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+            <summary>
+            Базовый фильтр данных по пользователям и ролям
+            </summary>
+            <param name="httpContextAccessor">Контекст</param>
+            <typeparam name="TEntity">Сущность</typeparam>
+        </member>
+        <member name="F:ToDo.WebApi.Repos.CommonFilters.CommonAuthorizationFilter`1._user">
+            <summary>
+            Данные пользователя, залогиненного в систему
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.CommonFilters.CommonAuthorizationFilter`1.ApplyAuthorization(System.Linq.IQueryable{`0})">
+            <summary>
+            Логика по умолчанию для авторизации сущности
+            </summary>
+            <param name="queryable">Запрос</param>
+            <returns>Отфильтрованный запрос или null</returns>
+        </member>
+        <member name="T:ToDo.WebApi.Repos.CommonFilters.ICommonFilter`2">
+            <summary>
+            Интерфейс для цепочки базовых фильтров
+            </summary>
+            <typeparam name="TEntity">Сущность</typeparam>
+            <typeparam name="TFilterData">Данные фильтра</typeparam>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.CommonFilters.ICommonFilter`2.ApplyPart(`1,System.Linq.IQueryable{`0})">
+            <summary>
+            Шаблон фильтра
+            </summary>
+            <param name="filterData">Данные фильтра</param>
+            <param name="queryable">Фильруемый запрос</param>
+            <returns>Отфильтрованный запрос</returns>
+        </member>
+        <member name="T:ToDo.WebApi.Repos.EfRepository`2">
+            <summary>
+            Обобщенный репозиторий для EntityFramework
+            </summary>
+            <param name="context">Контекст хранилища</param>
+            <param name="filter">Класс, применяющий фильтрацию и пагинацию</param>
+            <typeparam name="TEntity">Тип сущности</typeparam>
+            <typeparam name="TFilterData">Тип данных фильтрации</typeparam>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.EfRepository`2.#ctor(ToDo.WebApi.Domain.DataContext,ToDo.WebApi.Abstractions.FiltersData.IFilter{`0,`1})">
+            <summary>
+            Обобщенный репозиторий для EntityFramework
+            </summary>
+            <param name="context">Контекст хранилища</param>
+            <param name="filter">Класс, применяющий фильтрацию и пагинацию</param>
+            <typeparam name="TEntity">Тип сущности</typeparam>
+            <typeparam name="TFilterData">Тип данных фильтрации</typeparam>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.EfRepository`2.GetFilteredAsync(`1,System.Threading.CancellationToken)">
+            <summary>
+            Получение отфильтрованного списка сущностей
+            </summary>
+            <param name="filterData">Данные фильтра</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns></returns>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.EfRepository`2.GetAllAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получение списка всех тасок
+            </summary>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns></returns>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.EfRepository`2.GetAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Получает задачу по id
+            </summary>
+            <param name="id">Идентификатор задачи</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Найденная задачи или null</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.EfRepository`2.AddAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Добавляет задачу в хранилище
+            </summary>
+            <param name="entity">Сущность задачи</param>
+            <param name="cancellation">Токен отмены</param>
+            <returns>Идентификатор добавленной записи</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.EfRepository`2.UpdateAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Обновляет задачу в хранилище
+            </summary>
+            <param name="entity">Новые данные со старым идентификатором</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.EfRepository`2.DeleteAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Удаляет задачу из хранилища
+            </summary>
+            <param name="id">Идентификатор сущности</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <remarks>Бросает исключение KryNotFoundException если сущность не найдена</remarks>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.EfRepository`2.RestoreAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Восстановление задачи
+            </summary>
+            <param name="id">Идентификатор сущности</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ToDo.WebApi.Repos.EfRepository`2.DeleteAsync(System.Collections.Generic.IEnumerable{System.Guid},System.Threading.CancellationToken)" -->
+        <member name="T:ToDo.WebApi.Repos.FiltersData.UserTaskFilterData">
+            <summary>
+            Набор данных для фильтрации UserTaskFilter
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Repos.FiltersData.UserTaskFilterData.UserTaskListId">
+            <summary>
+            Фильтрация по id списка
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Repos.FiltersData.UserTaskFilterData.NamePart">
+            <summary>
+            Фильтрация по части имени
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Repos.FiltersData.UserTaskFilterData.DescriptionPart">
+            <summary>
+            Фильтрация по части описания
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Repos.FiltersData.UserTaskFilterData.WithDeleted">
+            <summary>
+            Включать удаленные
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.Repos.FiltersData.UserTaskFilterData.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Repos.UserTaskLists.UserTaskListFilter">
+            <summary>
+            Фильтр по спискам задач
+            </summary>
+            <param name="partialFilters">Фильтр запроса по задаче</param>
+        </member>
+        <member name="M:ToDo.WebApi.Repos.UserTaskLists.UserTaskListFilter.#ctor(System.Collections.Generic.IEnumerable{ToDo.WebApi.Repos.CommonFilters.ICommonFilter{ToDo.WebApi.Domain.Entities.UserTaskList,ToDo.WebApi.Repos.FiltersData.UserTaskListFilterData}})">
+            <summary>
+            Фильтр по спискам задач
+            </summary>
+            <param name="partialFilters">Фильтр запроса по задаче</param>
+        </member>
+        <member name="T:ToDo.WebApi.ServiceAbstractions.IAuthorizationService`1">
+            <summary>
+            Авторизация для сущностей
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IAuthorizationService`1.CheckCanChangeAsync(System.Guid,System.Guid,System.Threading.CancellationToken)">
+             <summary>
+             Проверяет имеется ли доступ на изменение сущности
+             </summary>
+             <param name="id">Идентификатор сущности</param>
+             <param name="requestedId">Идентификатор текущего пользователя</param>
+             <param name="cancellationToken">Токен отмены</param>
+            <exception cref="T:System.UnauthorizedAccessException">Если нет доступа выбрасывается исключение</exception>
+        </member>
+        <member name="T:ToDo.WebApi.ServiceAbstractions.IUserService">
+            <summary>
+            Сервис данных пользователя
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IUserService.GetCurrentUserIdAsync(System.Security.Claims.ClaimsPrincipal)">
+            <summary>
+            Получает идентификатор текущего пользователя
+            </summary>
+            <param name="user">Данные пользователя, если есть</param>
+            <returns>Идентификатор текущего пользователя</returns>
+        </member>
+        <member name="T:ToDo.WebApi.ServiceAbstractions.IUserTaskListService">
+            <summary>
+            Сервис списков задач
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IUserTaskListService.GetUserTasksListsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получение списков задач 
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IUserTaskListService.AddUserTaskListAsync(ToDo.WebApi.ServiceDomain.UserTaskListDto,System.Threading.CancellationToken)">
+            <summary>
+            Добавление списка
+            </summary>
+            <param name="userTaskListDto">Данные списка</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Идентификатор созданного списка</returns>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IUserTaskListService.UpdateUserTaskListAsync(ToDo.WebApi.ServiceDomain.UserTaskListDto,System.Threading.CancellationToken)">
+            <summary>
+            Обновление данных списка
+            </summary>
+            <param name="userTaskListDto">Новые данные списка</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IUserTaskListService.DeleteUserTaskListAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Удаление данных списка 
+            </summary>
+            <param name="id">Идентификатор</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="T:ToDo.WebApi.ServiceAbstractions.IUserTaskService">
+            <summary>
+             Интерфейс сервиса задачи
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IUserTaskService.GetUserTasksAsync(ToDo.WebApi.ServiceDomain.UserTaskFilterDto,System.Threading.CancellationToken)">
+            <summary>
+            Фильтрация по различным полям
+            </summary>
+            <param name="filter">Класс фильтра</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Отфильтрованные данные задачи</returns>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IUserTaskService.GetUserTaskAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Получение данных по таске
+            </summary>
+            <param name="id">Идентификатор задачи</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Задача</returns>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IUserTaskService.AddAsync(ToDo.WebApi.ServiceDomain.UserTaskDto,System.Threading.CancellationToken)">
+            <summary>
+            Создание задачи
+            </summary>
+            <param name="userTaskDto">Данные задачи</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IUserTaskService.EditAsync(ToDo.WebApi.ServiceDomain.UserTaskDto,System.Threading.CancellationToken)">
+            <summary>
+            Редактирование задачи
+            </summary>
+            <param name="userTaskDto">Отредактированные данные задачи</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns></returns>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IUserTaskService.MarkAsCompletedAsync(System.Guid,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Пометка задачи как выполненой
+            </summary>
+            <param name="id">Идентификатор задачи</param>
+            <param name="isCompleted">Флаг выполненности</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IUserTaskService.RemoveAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Удаление задачи
+            </summary>
+            <param name="id">Идентификатор задачи</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IUserTaskService.DeleteRangeAsync(System.Collections.Generic.IEnumerable{System.Guid},System.Threading.CancellationToken)">
+            <summary>
+            Удаление множества задач
+            </summary>
+            <param name="ids">Идентификаторы задач</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Удаленные идентификаторы</returns>
+        </member>
+        <member name="M:ToDo.WebApi.ServiceAbstractions.IUserTaskService.UndeleteAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Восстановление задач
+            </summary>
+            <param name="id">Идентификатор задачи</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="T:ToDo.WebApi.ServiceDomain.UserTaskDto">
+            <summary>
+            Дто задачи
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.ServiceDomain.UserTaskDto.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.ServiceDomain.UserTaskDto.Name">
+            <summary>
+            Название
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.ServiceDomain.UserTaskDto.Description">
+            <summary>
+            Описание
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.ServiceDomain.UserTaskDto.IsCompleted">
+            <summary>
+            Признак выполнения
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.ServiceDomain.UserTaskDto.IsDeleted">
+            <summary>
+            Признак удаления
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.ServiceDomain.UserTaskFilterDto">
+            <summary>
+            Часть фильтра задач доступная из сервиса
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.ServiceDomain.UserTaskFilterDto.UserTaskListId">
+            <summary>
+            Идентификатор списка
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.ServiceDomain.UserTaskFilterDto.NamePart">
+            <summary>
+            Фильтр по части имени
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.ServiceDomain.UserTaskFilterDto.DescriptionPart">
+            <summary>
+            Фильтр по части описания
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.ServiceDomain.UserTaskFilterDto.Page">
+            <summary>
+            Номер страницы
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.ServiceDomain.UserTaskFilterDto.PageSize">
+            <summary>
+            Размер страницы
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.ServiceDomain.UserTaskListDto">
+            <summary>
+            Дто списка пользователей
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.ServiceDomain.UserTaskListDto.Id">
+            <summary>
+            Идентификатор
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.ServiceDomain.UserTaskListDto.Name">
+            <summary>
+            Название
+            </summary>
+        </member>
+        <member name="P:ToDo.WebApi.ServiceDomain.UserTaskListDto.OwnerUserId">
+            <summary>
+            Идентификатор владельца
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.ServiceDomain.UserTaskListFilterDto">
+            <summary>
+            Данные списка пользователей
+            </summary>
+        </member>
+        <member name="T:ToDo.WebApi.Services.DefaultUserService">
+            <summary>
+            Реализация сервиса пользователей для одного пользователя
+            </summary>
+        </member>
+        <member name="M:ToDo.WebApi.Services.DefaultUserService.GetCurrentUserIdAsync(System.Security.Claims.ClaimsPrincipal)">
+            <summary>
+            Возвращает всегда одно и то же
+            </summary>
+            <param name="user">Данные пользователя, если есть</param>
+            <returns>Идкнтификатор текущего пользователя</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Services.UserTaskListService.GetUserTasksListsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Получение списков задач 
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ToDo.WebApi.Services.UserTaskListService.AddUserTaskListAsync(ToDo.WebApi.ServiceDomain.UserTaskListDto,System.Threading.CancellationToken)">
+            <summary>
+            Добавление списка
+            </summary>
+            <param name="userTaskListDto">Данные списка</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Идентификатор созданного списка</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Services.UserTaskListService.UpdateUserTaskListAsync(ToDo.WebApi.ServiceDomain.UserTaskListDto,System.Threading.CancellationToken)">
+            <summary>
+            Обновление данных списка
+            </summary>
+            <param name="userTaskListDto">Новые данные списка</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:ToDo.WebApi.Services.UserTaskListService.DeleteUserTaskListAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Удаление данных списка 
+            </summary>
+            <param name="id">Идентификатор</param>
+            <param name="cancellationToken">Токен отмены</param>
+        </member>
+        <member name="M:ToDo.WebApi.Services.UserTaskService.GetUserTaskAsync(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            Получение данных по таске
+            </summary>
+            <param name="id">Идентификатор задачи</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Задача</returns>
+        </member>
+        <member name="M:ToDo.WebApi.Services.UserTaskService.GetUserTasksAsync(ToDo.WebApi.ServiceDomain.UserTaskFilterDto,System.Threading.CancellationToken)">
+            <summary>
+            Фильтрация по различным полям
+            </summary>
+            <param name="filter">Класс фильтра</param>
+            <param name="cancellationToken">Токен отмены</param>
+            <returns>Отфильтрованные данные задачи</returns>
+        </member>
+        <member name="T:ToDo.Migrations.init">
+            <inheritdoc />
+        </member>
+        <member name="M:ToDo.Migrations.init.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ToDo.Migrations.init.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:ToDo.Migrations.init.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
