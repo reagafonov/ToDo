@@ -29,4 +29,9 @@ public struct UserTaskFilterDto
     /// Размер страницы
     /// </summary>
     public int PageSize { get; set; }
+    
+    /// <summary>
+    /// Включать удаленные
+    /// </summary>
+    public bool WithDeleted { get; set; }
 }

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "143ed008-4452-4761-9c84-8874cbf4490f",
+		"_postman_id": "1989e72d-66ce-46b7-9f0e-f55fa3504200",
 		"name": "ToDoTask Copy",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "22118970"
@@ -492,6 +492,27 @@
 						"v1",
 						"Task",
 						"{{taskId3}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllWithDeleted",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task/list/{{id}}/all",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task",
+						"list",
+						"{{id}}",
+						"all"
 					]
 				}
 			},

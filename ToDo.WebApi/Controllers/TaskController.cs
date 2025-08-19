@@ -15,6 +15,26 @@ namespace ToDo.WebApi.Controllers;
 [Route("v1/[controller]")]
 public class TaskController(IUserTaskService userTaskService, IMapper mapper, IUserService userService):ControllerBase
 {
+
+    /// <summary>
+    /// Получает все задачи, включая удаленные, для списка
+    /// </summary>
+    /// <param name="listId">Идентификатор списка</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns>Задачи</returns>
+    [HttpGet("list/{listId:guid}/all")]
+    public async Task<List<UserTaskSmallModel>> GetAllUserTasks([FromRoute]Guid listId, CancellationToken cancellationToken)
+    {
+        UserTaskFilterDto userTaskFilterDto = new UserTaskFilterDto()
+        {
+            WithDeleted = true,
+            UserTaskListId = listId
+        };
+        
+        var allTasks = await userTaskService.GetUserTasksAsync(userTaskFilterDto, cancellationToken);
+        return mapper.Map<List<UserTaskSmallModel>>(allTasks);
+    }
+    
     /// <summary>
     /// Получение данных задачи
     /// </summary>

@@ -18,4 +18,9 @@ public class BaseFilterData
     /// </summary>
     /// <remarks>Если не установлена, то пагинация выключена</remarks>
     public int? PageSize { get; init; }
+    
+    /// <summary>
+    /// Включать удаленные
+    /// </summary>
+    public bool WithDeleted { get; init; }
 }

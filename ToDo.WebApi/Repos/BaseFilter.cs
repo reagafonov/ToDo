@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ToDo.WebApi.Abstractions;
 using ToDo.WebApi.Abstractions.FiltersData;
 using ToDo.WebApi.Repos.CommonFilters;
@@ -10,12 +11,19 @@ namespace ToDo.WebApi.Repos;
 /// <param name="partialFilters">Подфильтры</param>
 /// <typeparam name="TEntity">Тип сущности</typeparam>
 /// <typeparam name="TFilterData">Тип данных фильтра репозитория</typeparam>
+/// <exception cref="ArgumentNullException">При пустых данных фильра</exception>
 public class BaseFilter<TEntity, TFilterData>(IEnumerable<ICommonFilter<TEntity,TFilterData>> partialFilters):IFilter<TEntity, TFilterData> 
     where TEntity:BaseEntity
     where TFilterData:BaseFilterData
 {
     public virtual IQueryable<TEntity> Apply(TFilterData filterData, IQueryable<TEntity> queryable)
     {
+        if (filterData == null)
+            throw new ArgumentNullException(nameof(filterData));
+
+        if (filterData.WithDeleted)
+            queryable = queryable.IgnoreQueryFilters();
+        
         foreach (ICommonFilter<TEntity, TFilterData> partialFilter in partialFilters)
         {
             IQueryable<TEntity>? partialResult = partialFilter.ApplyPart(filterData, queryable);
