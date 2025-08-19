@@ -10,7 +10,6 @@ public class MapperProfile:Profile
     public MapperProfile()
     {
         CreateMap<UserTaskDto, UserTask>()
-            .ForMember(userTask => userTask.UserTaskListId, expression => expression.Ignore())
             .ForMember(userTask => userTask.TypeUserTaskList, expression => expression.Ignore())
             .ReverseMap();
 

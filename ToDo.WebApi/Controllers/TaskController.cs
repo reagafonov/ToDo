@@ -13,7 +13,7 @@ namespace ToDo.WebApi.Controllers;
 /// <param name="mapper">automapper</param>
 [ApiController]
 [Route("v1/[controller]")]
-public class TaskController(IUserTaskService userTaskService, IMapper mapper):ControllerBase
+public class TaskController(IUserTaskService userTaskService, IMapper mapper, IUserService userService):ControllerBase
 {
     /// <summary>
     /// Получение данных задачи
@@ -56,6 +56,7 @@ public class TaskController(IUserTaskService userTaskService, IMapper mapper):Co
     public async Task<Guid> AddAsync([FromBody] UserTaskAddModel userTaskModel, CancellationToken cancellationToken)
     {
         UserTaskDto dto = mapper.Map<UserTaskDto>(userTaskModel);
+        dto.OwnerUserId = await userService.GetCurrentUserIdAsync(User);
         Guid userTaskId = await userTaskService.AddAsync(dto, cancellationToken);
         return userTaskId;
     }
@@ -76,7 +77,7 @@ public class TaskController(IUserTaskService userTaskService, IMapper mapper):Co
     /// </summary>
     /// <param name="id">Идентификатор задачи</param>
     /// <param name="cancellationToken">Токен отмены</param>
-    [HttpPatch("{id:guid}/set-uncompleted")]
+    [HttpPatch("{id:guid}/uncomplete")]
     public async Task SetUncompletedAsync([FromRoute] Guid id, CancellationToken cancellationToken)
     {
         await userTaskService.MarkAsCompletedAsync(id,false, cancellationToken);
@@ -99,7 +100,7 @@ public class TaskController(IUserTaskService userTaskService, IMapper mapper):Co
     /// <param name="ids">Идентификаторы задач</param>
     /// <param name="cancellationToken">Токен отмены</param>
     [HttpDelete]
-    public async Task DeleteAsync([FromBody] Guid[] ids, CancellationToken cancellationToken)
+    public async Task DeleteAsync([FromBody] ICollection<Guid> ids, CancellationToken cancellationToken)
     {
         await userTaskService.DeleteRangeAsync(ids, cancellationToken);
     }

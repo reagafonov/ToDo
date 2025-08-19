@@ -19,4 +19,6 @@ public class UserTaskSmallModel:BaseOutputModel
     /// Пизнак удаленности
     /// </summary>
     public required bool IsDeleted { get; init; }
+    
+    
 }

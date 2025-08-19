@@ -22,5 +22,9 @@ public class UserTaskModel:BaseOutputModel
     /// </summary>
     public string? Description { get; init; }
     
+    /// <summary>
+    /// Признак выполнения
+    /// </summary>
+    public bool IsCompleted { get; set; }
     
 }

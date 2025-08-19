@@ -15,4 +15,9 @@ public class UserTaskAddModel
     /// Описание
     /// </summary>
     public string? Description { get; init; }
+    
+    /// <summary>
+    /// Идентификатор списка задач
+    /// </summary>
+    public Guid? UserTaskListId { get; set; }
 }

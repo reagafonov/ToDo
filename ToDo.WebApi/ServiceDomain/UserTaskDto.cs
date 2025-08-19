@@ -21,6 +21,16 @@ public class UserTaskDto
     public string Description { get; set; }
     
     /// <summary>
+    /// Идентификатор списка задач
+    /// </summary>
+    public Guid? UserTaskListId { get; set; }
+    
+    /// <summary>
+    /// Идентификатор владельца
+    /// </summary>
+    public string OwnerUserId { get; set; }
+    
+    /// <summary>
     /// Признак выполнения
     /// </summary>
     public bool IsCompleted { get; set; }
