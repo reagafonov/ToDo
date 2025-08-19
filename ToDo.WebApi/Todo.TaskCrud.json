@@ -1,0 +1,530 @@
+{
+	"info": {
+		"_postman_id": "143ed008-4452-4761-9c84-8874cbf4490f",
+		"name": "ToDoTask Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22118970"
+	},
+	"item": [
+		{
+			"name": "AddList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Save the GUID from the response to a request variable 'id'",
+							"pm.environment.set(\"id\", pm.response.text().replace(/\"/g, ''));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{$randomWord}}\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/TaskList",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"TaskList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTask",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task/list/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task",
+						"list",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddTask",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Generate and set escaped random lorem paragraphs to environment variable",
+							"const randomLoremParagraphs = pm.variables.replaceIn('{{$randomLoremParagraphs}}').replace(/\\n/g, '\\\\n').replace(/\\r/g, '\\\\r');",
+							"pm.environment.set('escapedRandomLoremParagraphs', randomLoremParagraphs);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"taskId\", pm.response.text().replace(/\"/g, ''));",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{$randomLoremWord}}\",\n    \"description\": \"{{escapedRandomLoremParagraphs}}\",\n    \"userTaskListId\":\"{{id}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTask",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task/{{taskId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task",
+						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Complete",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task/{{taskId}}/complete",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task",
+						"{{taskId}}",
+						"complete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTaskAfterComplete",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task/{{taskId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task",
+						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Uncomplete",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task/{{taskId}}/uncomplete",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task",
+						"{{taskId}}",
+						"uncomplete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTaskAfterUncomplete",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task/{{taskId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task",
+						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task/{{taskId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task",
+						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTaskAfterDelete",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task/{{taskId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task",
+						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Undelete",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task/{{taskId}}/undelete",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task",
+						"{{taskId}}",
+						"undelete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetTaskAfterUndelete",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task/{{taskId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task",
+						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddTask2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Generate and set escaped random lorem paragraphs to environment variable",
+							"const randomLoremParagraphs = pm.variables.replaceIn('{{$randomLoremParagraphs}}').replace(/\\n/g, '\\\\n').replace(/\\r/g, '\\\\r');",
+							"pm.environment.set('escapedRandomLoremParagraphs', randomLoremParagraphs);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"taskId2\", pm.response.text().replace(/\"/g, ''));",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{$randomLoremWord}}\",\n    \"description\": \"{{escapedRandomLoremParagraphs}}\",\n    \"userTaskListId\":\"{{id}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddTask3",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Generate and set escaped random lorem paragraphs to environment variable",
+							"const randomLoremParagraphs = pm.variables.replaceIn('{{$randomLoremParagraphs}}').replace(/\\n/g, '\\\\n').replace(/\\r/g, '\\\\r');",
+							"pm.environment.set('escapedRandomLoremParagraphs', randomLoremParagraphs);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"taskId3\", pm.response.text().replace(/\"/g, ''));",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{$randomLoremWord}}\",\n    \"description\": \"{{escapedRandomLoremParagraphs}}\",\n    \"userTaskListId\":\"{{id}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteMany",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n        \"{{taskId}}\",\n        \"{{taskId2}}\",\n        \"{{$randomUUID}}\"\n    ]\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAfterDeleteMany",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task/list/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task",
+						"list",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteTask3",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task/{{taskId3}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task",
+						"{{taskId3}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5272",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "0a914d3a-b1b5-4c1e-b4af-d93e0a46c1cb",
+		"name": "ToDo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22118970"
+	},
+	"item": [
+		{
+			"name": "TaskList",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true,
+				"disabledSystemHeaders": {
+					"connection": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/TaskList",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"TaskList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Save the GUID from the response to a request variable 'id'",
+							"pm.environment.set(\"id\", pm.response.text().replace(/\"/g, ''));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{$randomWord}}\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/TaskList",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"TaskList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateList",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{$randomWord}}\"\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/TaskList/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"TaskList",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteList",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/TaskList/{{id}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"TaskList",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5272",
+			"type": "string"
+		}
+	]
+}
