@@ -33,7 +33,11 @@ public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterDat
     {
         UserTaskList userTaskList = mapper.Map<UserTaskList>(userTaskListDto);
         
-        return await userTaskListRepositrty.AddAsync(userTaskList, cancellationToken);
+        await userTaskListRepositrty.AddAsync(userTaskList, cancellationToken);
+        
+        await userTaskListRepositrty.SaveChangesAsync(cancellationToken);
+        
+        return userTaskList.Id;
     }
 
     /// <summary>
@@ -43,14 +47,20 @@ public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterDat
     /// <param name="cancellationToken">Токен отмены</param>
     public async Task UpdateUserTaskListAsync(UserTaskListDto userTaskListDto, CancellationToken cancellationToken)
     {
-        UserTaskList userTaskList = mapper.Map<UserTaskList>(userTaskListDto);
         
-        UserTaskList currentData = await userTaskListRepositrty.GetAsync(userTaskList.Id, cancellationToken);
+        UserTaskList? currentData = await userTaskListRepositrty.GetAsync(userTaskListDto.Id, cancellationToken);
 
+        if (currentData == null)
+            throw new KeyNotFoundException();
+        
         if (currentData.OwnerUserId != userTaskListDto.OwnerUserId)
             throw new UnauthorizedAccessException();
         
-        await userTaskListRepositrty.UpdateAsync(userTaskList, cancellationToken);
+        mapper.Map(userTaskListDto, currentData);
+        
+        await userTaskListRepositrty.UpdateAsync(currentData, cancellationToken);
+        
+        await userTaskListRepositrty.SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>
@@ -61,5 +71,6 @@ public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterDat
     public async Task DeleteUserTaskListAsync(Guid id, CancellationToken cancellationToken)
     {
         await userTaskListRepositrty.DeleteAsync(id, cancellationToken);
+        await userTaskListRepositrty.SaveChangesAsync(cancellationToken);
     }
 }

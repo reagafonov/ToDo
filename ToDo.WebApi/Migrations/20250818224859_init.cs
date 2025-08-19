@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ToDo.Migrations
+namespace ToDo.WebApi.Migrations
 {
     /// <inheritdoc />
     public partial class init : Migration

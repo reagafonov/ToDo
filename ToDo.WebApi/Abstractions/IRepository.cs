@@ -9,7 +9,7 @@ public interface IRepository<TEntity,in TFilterData> where TEntity : BaseEntity
     /// <param name="filterData">Данные фильтра</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns></returns>
-    Task<IEnumerable<TEntity>> GetFilteredAsync(TFilterData filterData,
+    Task<List<TEntity>> GetFilteredAsync(TFilterData filterData,
         CancellationToken cancellationToken);
     
     /// <summary>
@@ -31,7 +31,7 @@ public interface IRepository<TEntity,in TFilterData> where TEntity : BaseEntity
     /// </summary>
     /// <param name="entity">Сущность задачи</param>
     /// <param name="cancellation">Токен отмены</param>
-    Task<Guid> AddAsync(TEntity entity, CancellationToken cancellation = default);
+    Task AddAsync(TEntity entity, CancellationToken cancellation = default);
 
     /// <summary>
     /// Обновляет задачу в хранилище
@@ -59,7 +59,13 @@ public interface IRepository<TEntity,in TFilterData> where TEntity : BaseEntity
     /// <summary>
     /// Удаляет набор задач
     /// </summary>
-    /// <param name="ids">Идентификаторы сущности</param>
+    /// <param name="entities">Сущности</param>
     /// <param name="cancellation">Токен отмены</param>
-    Task<List<Guid>> DeleteAsync(IEnumerable<Guid> ids, CancellationToken cancellation = default);
+    Task DeleteAsync(IEnumerable<TEntity> entities, CancellationToken cancellation = default);
+    
+    /// <summary>
+    /// Осуществляет запись измененных данных в базу
+    /// </summary>
+    /// <param name="cancellation"></param>
+    Task SaveChangesAsync(CancellationToken cancellation = default);
 }

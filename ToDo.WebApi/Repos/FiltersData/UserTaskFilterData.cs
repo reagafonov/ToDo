@@ -31,4 +31,9 @@ public class UserTaskFilterData: BaseFilterData
     /// Идентификатор
     /// </summary>
     public Guid? Id { get; set; }
+
+    /// <summary>
+    /// Набор идентификаторов
+    /// </summary>
+    public IEnumerable<Guid>? Ids { get; set; }
 }

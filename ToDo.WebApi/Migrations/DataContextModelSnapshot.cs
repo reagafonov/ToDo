@@ -8,7 +8,7 @@ using ToDo.WebApi.Domain;
 
 #nullable disable
 
-namespace ToDo.Migrations
+namespace ToDo.WebApi.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace ToDo.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("ToDo.Domain.Entities.UserTask", b =>
+            modelBuilder.Entity("ToDo.WebApi.Domain.Entities.UserTask", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +56,7 @@ namespace ToDo.Migrations
                     b.ToTable("UserTasks");
                 });
 
-            modelBuilder.Entity("ToDo.Domain.Entities.UserTaskFile", b =>
+            modelBuilder.Entity("ToDo.WebApi.Domain.Entities.UserTaskFile", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -87,7 +87,7 @@ namespace ToDo.Migrations
                     b.ToTable("UserTaskFiles");
                 });
 
-            modelBuilder.Entity("ToDo.Domain.Entities.UserTaskList", b =>
+            modelBuilder.Entity("ToDo.WebApi.Domain.Entities.UserTaskList", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -109,18 +109,18 @@ namespace ToDo.Migrations
                     b.ToTable("UserTaskLists");
                 });
 
-            modelBuilder.Entity("ToDo.Domain.Entities.UserTask", b =>
+            modelBuilder.Entity("ToDo.WebApi.Domain.Entities.UserTask", b =>
                 {
-                    b.HasOne("ToDo.Domain.Entities.UserTaskList", "TypeUserTaskList")
+                    b.HasOne("ToDo.WebApi.Domain.Entities.UserTaskList", "TypeUserTaskList")
                         .WithMany("UserTasks")
                         .HasForeignKey("UserTaskListId");
 
                     b.Navigation("TypeUserTaskList");
                 });
 
-            modelBuilder.Entity("ToDo.Domain.Entities.UserTaskFile", b =>
+            modelBuilder.Entity("ToDo.WebApi.Domain.Entities.UserTaskFile", b =>
                 {
-                    b.HasOne("ToDo.Domain.Entities.UserTask", "UserTask")
+                    b.HasOne("ToDo.WebApi.Domain.Entities.UserTask", "UserTask")
                         .WithMany()
                         .HasForeignKey("UserTaskId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -129,7 +129,7 @@ namespace ToDo.Migrations
                     b.Navigation("UserTask");
                 });
 
-            modelBuilder.Entity("ToDo.Domain.Entities.UserTaskList", b =>
+            modelBuilder.Entity("ToDo.WebApi.Domain.Entities.UserTaskList", b =>
                 {
                     b.Navigation("UserTasks");
                 });

@@ -35,6 +35,7 @@ public class DataContext:DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserTask>().HasQueryFilter(task => !task.IsDeleted);
+        modelBuilder.Entity<UserTaskList>().HasQueryFilter(task => !task.IsDeleted);
         
         base.OnModelCreating(modelBuilder);
     }

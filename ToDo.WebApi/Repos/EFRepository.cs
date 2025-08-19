@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ToDo.WebApi.Abstractions;
 using ToDo.WebApi.Abstractions.FiltersData;
@@ -12,7 +13,7 @@ namespace ToDo.WebApi.Repos;
 /// <param name="filter">Класс, применяющий фильтрацию и пагинацию</param>
 /// <typeparam name="TEntity">Тип сущности</typeparam>
 /// <typeparam name="TFilterData">Тип данных фильтрации</typeparam>
-public class EfRepository<TEntity, TFilterData>(DataContext context, IFilter<TEntity, TFilterData> filter)
+public class EfRepository<TEntity, TFilterData>(DataContext context, IFilter<TEntity, TFilterData> filter, IMapper mapper)
     : IRepository<TEntity, TFilterData>
     where TEntity : BaseEntity
     where TFilterData : BaseFilterData
@@ -23,12 +24,12 @@ public class EfRepository<TEntity, TFilterData>(DataContext context, IFilter<TEn
     /// <param name="filterData">Данные фильтра</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns></returns>
-    public async Task<IEnumerable<TEntity>> GetFilteredAsync(TFilterData filterData,
+    public async Task<List<TEntity>> GetFilteredAsync(TFilterData filterData,
         CancellationToken cancellationToken)
     {
         IQueryable<TEntity>? query = context.Set<TEntity>().AsQueryable();
         query = filter.Apply(filterData, query);
-        return await query.ToListAsync(cancellationToken);
+        return await query.AsNoTracking().ToListAsync(cancellationToken);
     }
 
     /// <summary>
@@ -37,7 +38,7 @@ public class EfRepository<TEntity, TFilterData>(DataContext context, IFilter<TEn
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns></returns>
     public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
-        => await context.Set<TEntity>().ToListAsync(cancellationToken);
+        => await context.Set<TEntity>().AsNoTracking().ToListAsync(cancellationToken);
 
     /// <summary>
     /// Получает задачу по id
@@ -46,7 +47,7 @@ public class EfRepository<TEntity, TFilterData>(DataContext context, IFilter<TEn
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Найденная задачи или null</returns>
     public async Task<TEntity?> GetAsync(Guid id, CancellationToken cancellationToken) =>
-        await context.Set<TEntity>().FindAsync(id, cancellationToken);
+        await context.Set<TEntity>().AsNoTracking().Where(entity => entity.Id == id).FirstOrDefaultAsync(cancellationToken);
 
     /// <summary>
     /// Добавляет задачу в хранилище
@@ -54,11 +55,10 @@ public class EfRepository<TEntity, TFilterData>(DataContext context, IFilter<TEn
     /// <param name="entity">Сущность задачи</param>
     /// <param name="cancellation">Токен отмены</param>
     /// <returns>Идентификатор добавленной записи</returns>
-    public async Task<Guid> AddAsync(TEntity entity, CancellationToken cancellation = default)
+    public async Task AddAsync(TEntity entity, CancellationToken cancellation = default)
     {
         context.Add(entity);
-        await context.SaveChangesAsync(cancellation);
-        return entity.Id;
+       
     }
 
     /// <summary>
@@ -69,7 +69,11 @@ public class EfRepository<TEntity, TFilterData>(DataContext context, IFilter<TEn
     public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
         context.Update(entity);
-        await context.SaveChangesAsync(cancellationToken);
+        // var oldValues = await context.Set<TEntity>().FindAsync(entity.Id, cancellationToken);
+        // if (oldValues == null)
+        //     throw new KeyNotFoundException();
+        // mapper.Map(entity, oldValues);
+        // context.Update(entity);
     }
 
     /// <summary>
@@ -87,7 +91,6 @@ public class EfRepository<TEntity, TFilterData>(DataContext context, IFilter<TEn
 
         entityEntry.IsDeleted = true;
         context.Update(entityEntry);
-        await context.SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>
@@ -106,20 +109,18 @@ public class EfRepository<TEntity, TFilterData>(DataContext context, IFilter<TEn
         {
             entityEntry.IsDeleted = false;
             context.Update(entityEntry);
-            await context.SaveChangesAsync(cancellationToken);
         }
     }
 
     /// <summary>
     /// Удаляет набор задач
     /// </summary>
-    /// <param name="ids">Идентификаторы сущностей/param>
+    /// <param name="elements">Сущности</param>
     /// <param name="cancellationToken">Токен отмены</param>
-    /// <returns>Удаленные идентификаторы</returns>
-    public async Task<List<Guid>> DeleteAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
+    public async Task DeleteAsync(IEnumerable<TEntity> elements, CancellationToken cancellationToken)
     {
-        List<TEntity> elements = await context.Set<TEntity>().Where(entity => ids.Contains(entity.Id))
-            .ToListAsync(cancellationToken);
+        // List<TEntity> elements = await context.Set<TEntity>().Where(entity => ids.Contains(entity.Id))
+        //     .ToListAsync(cancellationToken);
 
         foreach (TEntity element in elements)
         {
@@ -127,8 +128,18 @@ public class EfRepository<TEntity, TFilterData>(DataContext context, IFilter<TEn
             context.Update(element);
         }
 
-        await context.SaveChangesAsync(cancellationToken);
+        // await context.SaveChangesAsync(cancellationToken);
+        //
+        // return elements.Select(e => e.Id).ToList();
+    }
 
-        return elements.Select(e => e.Id).ToList();
+    /// <summary>
+    /// Осуществляет запись измененных данных в базу
+    /// </summary>
+    /// <param name="cancellation">Токен отмены</param>
+    public async Task SaveChangesAsync(CancellationToken cancellation = default)
+    {
+        await context.SaveChangesAsync(cancellation);
+        context.ChangeTracker.Clear();
     }
 }

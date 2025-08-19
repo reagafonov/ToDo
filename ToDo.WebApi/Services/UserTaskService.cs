@@ -7,7 +7,12 @@ using ToDo.WebApi.ServiceDomain;
 
 namespace ToDo.WebApi.Services;
 
-public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repository, IRepository<UserTaskList, UserTaskListFilterData> listRepository, IMapper mapper):IUserTaskService
+/// <summary>
+/// Сервис задач
+/// </summary>
+/// <param name="repository">Репозиторий задач</param>
+/// <param name="mapper">Автомаппер</param>
+public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repository, IMapper mapper):IUserTaskService
 {
 
     /// <summary>
@@ -36,18 +41,42 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
         IEnumerable<UserTask?> tasks =  await repository.GetFilteredAsync(filterData, cancellationToken);
         return mapper.Map<List<UserTaskDto>>(tasks);
     }
+    
+    /// <summary>
+    /// Создание задачи
+    /// </summary>
+    /// <param name="userTaskDto">Данные задачи</param>
+    /// <param name="cancellationToken">Токен отмены</param>
     public async Task<Guid> AddAsync(UserTaskDto userTaskDto, CancellationToken cancellationToken)
     {
         UserTask? userTask = mapper.Map<UserTask>(userTaskDto);
-        return await repository.AddAsync(userTask, cancellationToken); 
+        await repository.AddAsync(userTask, cancellationToken);
+        await repository.SaveChangesAsync(cancellationToken);
+        return userTask.Id;
     }
 
+    /// <summary>
+    /// Редактирование задачи
+    /// </summary>
+    /// <param name="userTaskDto">Отредактированные данные задачи</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns></returns>
     public async Task EditAsync(UserTaskDto userTaskDto, CancellationToken cancellationToken)
     {
-        UserTask? userTask = mapper.Map<UserTask>(userTaskDto);
+        UserTask? userTask = await repository.GetAsync(userTaskDto.Id, cancellationToken);
+        if (userTask == null)
+            throw new KeyNotFoundException();
+        mapper.Map(userTaskDto, userTask);
         await repository.UpdateAsync(userTask, cancellationToken);
+        await repository.SaveChangesAsync(cancellationToken);
     }
 
+    /// <summary>
+    /// Пометка задачи как выполненной
+    /// </summary>
+    /// <param name="id">Идентификатор задачи</param>
+    /// <param name="isCompleted">Флаг выполненности</param>
+    /// <param name="cancellationToken">Токен отмены</param>
     public async Task MarkAsCompletedAsync(Guid id, bool isCompleted, CancellationToken cancellationToken)
     {
         UserTask? userTask = await repository.GetAsync(id, cancellationToken);
@@ -55,20 +84,48 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
             throw new KeyNotFoundException();
         userTask.IsCompleted = isCompleted;
         await repository.UpdateAsync(userTask, cancellationToken);
+        await repository.SaveChangesAsync(cancellationToken);
     }
 
+    /// <summary>
+    /// Удаление задачи
+    /// </summary>
+    /// <param name="id">Идентификатор задачи</param>
+    /// <param name="cancellationToken">Токен отмены</param>
     public async Task RemoveAsync(Guid id, CancellationToken cancellationToken)
     {
         await repository.DeleteAsync(id, cancellationToken);
+        await repository.SaveChangesAsync(cancellationToken);
     }
 
+    /// <summary>
+    /// Удаление множества задач
+    /// </summary>
+    /// <param name="ids">Идентификаторы задач</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns>Удаленные идентификаторы</returns>
     public async Task<IEnumerable<Guid>> DeleteRangeAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
     {
-        return await repository.DeleteAsync(ids, cancellationToken);
+        List<UserTask> userTasks = await repository.GetFilteredAsync(new UserTaskFilterData()
+                                                {
+                                                    Ids = ids
+                                                }, cancellationToken);
+        if (userTasks == null)
+            throw new KeyNotFoundException();
+        
+        await repository.DeleteAsync(userTasks, cancellationToken);
+        await repository.SaveChangesAsync(cancellationToken);
+        return userTasks.Select(t => t.Id);
     }
 
+    /// <summary>
+    /// Восстановление задач
+    /// </summary>
+    /// <param name="id">Идентификатор задачи</param>
+    /// <param name="cancellationToken">Токен отмены</param>
     public async Task UndeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         await repository.RestoreAsync(id, cancellationToken);
+        await repository.SaveChangesAsync(cancellationToken);
     }
 }

@@ -29,6 +29,9 @@ public class UserTaskFilter(IEnumerable<ICommonFilter<UserTask, UserTaskFilterDa
         if (filterData.Id.HasValue)
             queryable = queryable.Where(t => t.Id == filterData.Id);
         
+        if (filterData.Ids != null && filterData.Ids.Any())
+            queryable = queryable.Where(t => filterData.Ids.Contains(t.Id));
+        
         return base.Apply(filterData, queryable);
     }
 }
