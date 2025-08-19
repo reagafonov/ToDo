@@ -26,10 +26,10 @@ public static class DiExtensions
         services.AddHttpContextAccessor();
        
         //Обобщенные репозитории
-        services.AddSingleton(typeof(IRepository<,>), typeof(EfRepository<,>));
+        services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
 
-        services.AddSingleton<IFilter<UserTask,UserTaskFilterData>,UserTaskFilter>();
-        services.AddSingleton<IFilter<UserTaskList, UserTaskListFilterData>, UserTaskListFilter>();
+        services.AddScoped<IFilter<UserTask,UserTaskFilterData>,UserTaskFilter>();
+        services.AddScoped<IFilter<UserTaskList, UserTaskListFilterData>, UserTaskListFilter>();
         return services;
     }
 
@@ -42,10 +42,10 @@ public static class DiExtensions
     {
         /*цепочка подфильтров базового филтьра*/
         //Обобщенные адаптеры авторизации для фильтра авторизации по умолчанию
-        services.AddSingleton(typeof(ICommonFilter<,>), typeof(AuthorizationCommonFilterAdapter<,>));
+        services.AddScoped(typeof(ICommonFilter<,>), typeof(AuthorizationCommonFilterAdapter<,>));
         
         //Подфильтры авторизации по умолчанию для сущностей без кастомного фильтра
-        services.AddSingleton(typeof(IAuthorizationFilter<>), typeof(CommonAuthorizationFilter<>));
+        services.AddScoped(typeof(IAuthorizationFilter<>), typeof(CommonAuthorizationFilter<>));
        
         /*Кастомные фильтры авторизации для сущностей можно зарегистрировать здесь*/
         
@@ -60,10 +60,10 @@ public static class DiExtensions
     public static IServiceCollection RegisterServices(this IServiceCollection services)
     {
         //Сервис задач
-        services.AddSingleton<IUserTaskService, UserTaskService>();
+        services.AddScoped<IUserTaskService, UserTaskService>();
         
         //Сервис списков
-        services.AddSingleton<IUserTaskListService, UserTaskListService>();
+        services.AddScoped<IUserTaskListService, UserTaskListService>();
 
         //Сервер пользователей
         services.AddSingleton<IUserService, DefaultUserService>();
