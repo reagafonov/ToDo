@@ -7,7 +7,12 @@ using ToDo.WebApi.ServiceDomain;
 
 namespace ToDo.WebApi.Services;
 
-public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterData> userTaskListRepositrty,
+/// <summary>
+/// Сервис для работы со списками задач
+/// </summary>
+/// <param name="userTaskListRepository">Репозиторий списков задач</param>
+/// <param name="mapper">Автомаппер</param>
+public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterData> userTaskListRepository,
     IMapper mapper)
     : IUserTaskListService
 {
@@ -19,7 +24,7 @@ public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterDat
     public async Task<List<UserTaskListDto>> GetUserTasksListsAsync(CancellationToken cancellationToken)
     {
         UserTaskListFilterData filter = new UserTaskListFilterData();
-        IEnumerable<UserTaskList> userTaskLists = await userTaskListRepositrty.GetFilteredAsync(filter, cancellationToken);
+        IEnumerable<UserTaskList> userTaskLists = await userTaskListRepository.GetFilteredAsync(filter, cancellationToken);
         return mapper.Map<List<UserTaskListDto>>(userTaskLists);
     }
 
@@ -33,9 +38,9 @@ public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterDat
     {
         UserTaskList userTaskList = mapper.Map<UserTaskList>(userTaskListDto);
         
-        await userTaskListRepositrty.AddAsync(userTaskList, cancellationToken);
+        await userTaskListRepository.AddAsync(userTaskList, cancellationToken);
         
-        await userTaskListRepositrty.SaveChangesAsync(cancellationToken);
+        await userTaskListRepository.SaveChangesAsync(cancellationToken);
         
         return userTaskList.Id;
     }
@@ -48,7 +53,7 @@ public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterDat
     public async Task UpdateUserTaskListAsync(UserTaskListDto userTaskListDto, CancellationToken cancellationToken)
     {
         
-        UserTaskList? currentData = await userTaskListRepositrty.GetAsync(userTaskListDto.Id, cancellationToken);
+        UserTaskList? currentData = await userTaskListRepository.GetAsync(userTaskListDto.Id, cancellationToken);
 
         if (currentData == null)
             throw new KeyNotFoundException();
@@ -58,9 +63,9 @@ public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterDat
         
         mapper.Map(userTaskListDto, currentData);
         
-        await userTaskListRepositrty.UpdateAsync(currentData, cancellationToken);
+        await userTaskListRepository.UpdateAsync(currentData, cancellationToken);
         
-        await userTaskListRepositrty.SaveChangesAsync(cancellationToken);
+        await userTaskListRepository.SaveChangesAsync(cancellationToken);
     }
 
     /// <summary>
@@ -70,7 +75,7 @@ public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterDat
     /// <param name="cancellationToken">Токен отмены</param>
     public async Task DeleteUserTaskListAsync(Guid id, CancellationToken cancellationToken)
     {
-        await userTaskListRepositrty.DeleteAsync(id, cancellationToken);
-        await userTaskListRepositrty.SaveChangesAsync(cancellationToken);
+        await userTaskListRepository.DeleteAsync(id, cancellationToken);
+        await userTaskListRepository.SaveChangesAsync(cancellationToken);
     }
 }
