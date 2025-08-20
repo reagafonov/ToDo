@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "708060ef-9eea-4214-a6a3-5cda35b5ec2d",
+		"name": "ToDoFile",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22118970"
+	},
+	"item": [
+		{
+			"name": "AddList",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Save the GUID from the response to a request variable 'id'",
+							"pm.environment.set(\"id\", pm.response.text().replace(/\"/g, ''));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{$randomWord}}\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/TaskList",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"TaskList"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddTask",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Generate and set escaped random lorem paragraphs to environment variable",
+							"const randomLoremParagraphs = pm.variables.replaceIn('{{$randomLoremParagraphs}}').replace(/\\n/g, '\\\\n').replace(/\\r/g, '\\\\r');",
+							"pm.environment.set('escapedRandomLoremParagraphs', randomLoremParagraphs);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"taskId\", pm.response.text().replace(/\"/g, ''));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"{{$randomLoremWord}}\",\n    \"description\": \"{{escapedRandomLoremParagraphs}}\",\n    \"userTaskListId\":\"{{id}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/Task",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"Task"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddFile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"fileId\", pm.response.text().replace(/\"/g, ''));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "postman-cloud:///1f07d8e3-b116-4870-9478-9cfced3e8c82"
+						},
+						{
+							"key": "fileName",
+							"value": "appsettings.json",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/TodoFile/{{taskId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"TodoFile",
+						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetFileInfo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/TodoFile/task/{{taskId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"TodoFile",
+						"task",
+						"{{taskId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetContents",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/ToDoFile/{{fileId}}/contents",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"ToDoFile",
+						"{{fileId}}",
+						"contents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/v1/ToDoFile/{{fileId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"ToDoFile",
+						"{{fileId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
