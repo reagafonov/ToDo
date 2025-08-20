@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ToDo.WebApi.Domain.Entities;
 using ToDo.WebApi.Repos.CommonFilters;
-using ToDo.WebApi.Repos.FiltersData;
 
 namespace ToDo.WebApi.Repos.UserTasks;
 

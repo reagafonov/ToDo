@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Auth Demo</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<h2>Регистрация</h2>
+<input id="regUser" placeholder="Логин">
+<input id="regPass" placeholder="Пароль" type="password">
+<button onclick="register()">Зарегистрироваться</button>
+
+<h2>Логин</h2>
+<input id="logUser" placeholder="Логин">
+<input id="logPass" placeholder="Пароль" type="password">
+<button onclick="login()">Войти</button>
+
+<h2>Запрос к защищённому API</h2>
+<button onclick="getSecure()">Получить данные</button>
+
+<script>
+    function register() {
+        data = JSON.stringify({
+                username: $("#regUser").val(),
+                password: $("#regPass").val()
+            });
+        $.ajax({
+            url: "http://localhost:5000/v1/auth/register",
+            type: "POST",
+            contentType: "application/json",
+            data: data,
+            beforeSend: function(xhr) {
+        			xhr.setRequestHeader('Content-Type', 'application/json');
+    		},
+            success: function(res) { alert(res); },
+            error: function(xhr) { alert("Ошибка: " + xhr.responseText); }
+        });
+    }
+
+    function login() {
+        $.ajax({
+            url: "http://localhost:5000/v1/auth/login",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                username: $("#logUser").val(),
+                password: $("#logPass").val()
+            }),
+            success: function(res) {
+                localStorage.setItem("jwt", res.token);
+                alert("Вход успешен!");
+            },
+            error: function() { alert("Неверные данные"); }
+        });
+    }
+
+    function getSecure() {
+        var token = localStorage.getItem("jwt");
+        $.ajax({
+            url: "http://localhost:5000/v1/data/secure",
+            type: "GET",
+            headers: { "Authorization": "Bearer " + token },
+            success: function(res) { alert("Ответ: " + res.message); },
+            error: function(xhr) { alert("Ошибка: " + xhr.status); }
+        });
+    }
+</script>
+
+</body>
+</html>

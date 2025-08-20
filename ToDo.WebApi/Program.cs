@@ -1,7 +1,9 @@
-using Serilog;
 using ToDo.WebApi.Extensions;
+using ToDo.WebApi.Jwt.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddJwtConfigurationSources();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -18,7 +20,8 @@ builder.Services
     .RegisterSwagger()
     .RegisterControllers()
     .RegiserAuthorization()
-    .RegisterMongoServices(configuration);
+    .RegisterMongoServices(configuration)
+    .RegisterJwtAuthentication(configuration);
 
 builder.Host.RegisterSerilogConsole();
 
@@ -26,6 +29,7 @@ WebApplication app = builder.Build();
 
 app.AutoApplyMigrations();
 
+app.UseJwtAuthentication();
 //app.UseKeycloakAuthentication();
 
 // Configure the HTTP request pipeline.

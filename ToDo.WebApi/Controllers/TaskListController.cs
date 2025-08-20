@@ -5,6 +5,7 @@ using ToDo.WebApi.ServiceAbstractions;
 using ToDo.WebApi.ServiceDomain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 
 namespace ToDo.WebApi.Controllers;
@@ -16,7 +17,8 @@ namespace ToDo.WebApi.Controllers;
 /// <param name="mapper">automapper</param>
 [ApiController]
 [Route("v1/[controller]")]
-public class TaskListController(IUserTaskListService service, IMapper mapper, ILogger<TaskListController> logger, IUserService userService):ControllerBase
+[Authorize]
+public class TaskListController(IUserTaskListService service, IMapper mapper, ILogger<TaskListController> logger, IUserServiceClaims userServiceClaims):ControllerBase
 {
     /// <summary>
     /// Получение всех неудаленных списков для пользователя
@@ -62,7 +64,7 @@ public class TaskListController(IUserTaskListService service, IMapper mapper, IL
         logger.LogDebug(taskListModel.ToString());
         
         UserTaskListDto? dto = mapper.Map<UserTaskListDto>(taskListModel);
-        dto.OwnerUserId = await userService.GetCurrentUserIdAsync(User);
+        dto.OwnerUserId = await userServiceClaims.GetCurrentUserIdAsync(User);
         
         return await service.AddUserTaskListAsync(dto, cancellationToken);
     }
@@ -84,7 +86,7 @@ public class TaskListController(IUserTaskListService service, IMapper mapper, IL
         
         UserTaskListDto? dto = mapper.Map<UserTaskListDto>(taskListModel);
         dto.Id = id;
-        dto.OwnerUserId = await userService.GetCurrentUserIdAsync(User);
+        dto.OwnerUserId = await userServiceClaims.GetCurrentUserIdAsync(User);
         
         await service.UpdateUserTaskListAsync(dto, cancellationToken);
     }

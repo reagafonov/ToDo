@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ToDo.WebApi.Models;
 using ToDo.WebApi.ServiceAbstractions;
@@ -13,7 +14,8 @@ namespace ToDo.WebApi.Controllers;
 /// <param name="mapper">automapper</param>
 [ApiController]
 [Route("v1/[controller]")]
-public class TaskController(IUserTaskService userTaskService, IMapper mapper, IUserService userService):ControllerBase
+[Authorize]
+public class TaskController(IUserTaskService userTaskService, IMapper mapper, IUserServiceClaims userServiceClaims):ControllerBase
 {
 
     /// <summary>
@@ -76,7 +78,7 @@ public class TaskController(IUserTaskService userTaskService, IMapper mapper, IU
     public async Task<Guid> AddAsync([FromBody] UserTaskAddModel userTaskModel, CancellationToken cancellationToken)
     {
         UserTaskDto? dto = mapper.Map<UserTaskDto>(userTaskModel);
-        dto.OwnerUserId = await userService.GetCurrentUserIdAsync(User);
+        dto.OwnerUserId = await userServiceClaims.GetCurrentUserIdAsync(User);
         Guid userTaskId = await userTaskService.AddAsync(dto, cancellationToken);
         return userTaskId;
     }

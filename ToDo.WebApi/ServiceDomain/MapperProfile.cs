@@ -1,7 +1,7 @@
 using AutoMapper;
 using ToDo.WebApi.Domain.Entities;
-using ToDo.WebApi.Repos.FiltersData;
 using ToDo.WebApi.Repos.UserTaskLists;
+using ToDo.WebApi.Repos.UserTasks;
 
 namespace ToDo.WebApi.ServiceDomain;
 
@@ -22,5 +22,8 @@ public class MapperProfile:Profile
             .ReverseMap();
         
         CreateMap<UserTaskListFilterDto, UserTaskListFilter>();
+
+        CreateMap<UserDto, User>()
+            .ForMember(user => user.Id, expression => expression.MapFrom(y => Guid.NewGuid()));
     }
 }

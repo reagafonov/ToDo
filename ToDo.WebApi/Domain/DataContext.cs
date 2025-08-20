@@ -6,7 +6,7 @@ namespace ToDo.WebApi.Domain;
 /// <summary>
 /// Контекст для работы с EntityFramework
 /// </summary>
-public class DataContext:DbContext 
+public class DataContext(DbContextOptions<DataContext> options):DbContext(options)
 {
     /// <summary>
     /// Пользовательские задачи
@@ -22,12 +22,13 @@ public class DataContext:DbContext
     /// Списки задач
     /// </summary>
     public DbSet<UserTaskList> UserTaskLists { get; set; }
+    
+    /// <summary>
+    /// Пользователи
+    /// </summary>
+    public DbSet<User> Users { get; set; }
 
-    public DataContext(DbContextOptions<DataContext> options) : base(options) 
-    {
-        
-    }
-
+    
     /// <summary>
     /// Дополнительная инициализация
     /// </summary>

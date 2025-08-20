@@ -1,10 +1,11 @@
 using ToDo.WebApi.Abstractions;
 using ToDo.WebApi.Abstractions.FiltersData;
 using ToDo.WebApi.Domain.Entities;
+using ToDo.WebApi.Models;
 using ToDo.WebApi.MongoService;
 using ToDo.WebApi.Repos;
 using ToDo.WebApi.Repos.CommonFilters;
-using ToDo.WebApi.Repos.FiltersData;
+using ToDo.WebApi.Repos.Users;
 using ToDo.WebApi.Repos.UserTaskLists;
 using ToDo.WebApi.Repos.UserTasks;
 using ToDo.WebApi.ServiceAbstractions;
@@ -31,6 +32,7 @@ public static class DiExtensions
 
         services.AddScoped<IFilter<UserTask,UserTaskFilterData>,UserTaskFilter>();
         services.AddScoped<IFilter<UserTaskList, UserTaskListFilterData>, UserTaskListFilter>();
+        services.AddScoped<IFilter<User, UserFilterData>, UserFilter>();
         return services;
     }
 
@@ -65,9 +67,12 @@ public static class DiExtensions
         
         //Сервис списков
         services.AddScoped<IUserTaskListService, UserTaskListService>();
-
+        
+        //хелпер
+        services.AddScoped<IUserServiceClaims, DefaultUserService>();
         //Сервер пользователей
-        services.AddSingleton<IUserService, DefaultUserService>();
+        services.AddScoped<IUserService, UserService>();
+        
         
         //сервер документов
         services.AddScoped<IDocumentService, MongoDocumentService>();

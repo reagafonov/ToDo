@@ -18,8 +18,5 @@ public abstract class BaseEntity
     /// </summary>
     public bool IsDeleted { get; set; }
     
-    /// <summary>
-    /// Идентификатор владельца
-    /// </summary>
-    public string OwnerUserId { get; set; }
+    
 }

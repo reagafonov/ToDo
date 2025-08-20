@@ -6,7 +6,7 @@ namespace ToDo.WebApi.Domain.Entities;
 /// <summary>
 /// Файлы
 /// </summary>
-public class UserTaskFile:BaseEntity
+public class UserTaskFile:BaseOwnerEntity
 {
     /// <summary>
     /// Идентификатор задачи

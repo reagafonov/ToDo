@@ -11,7 +11,7 @@ namespace ToDo.WebApi.Repos.CommonFilters;
 /// <typeparam name="TEntity">Сущность</typeparam>
 public class CommonAuthorizationFilter<TEntity>(IHttpContextAccessor httpContextAccessor)
     : IAuthorizationFilter<TEntity>
-    where TEntity : BaseEntity
+    where TEntity : BaseOwnerEntity
 {
     /// <summary>
     /// Данные пользователя, залогиненного в систему

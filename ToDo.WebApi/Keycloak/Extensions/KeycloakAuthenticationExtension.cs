@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 
-namespace ToDo.WebApi.Extensions;
+namespace ToDo.WebApi.Keycloak.Extensions;
 
 /// <summary>
-/// Расширения для работы с авторизацией/аутентификацией JwtBearer
+/// Расширения для работы с авторизацией/аутентификацией Keycloak
 /// </summary>
-public static class BearerAuthentificationExtension
+public static class KeycloakAuthenticationExtension
 {
     /// <summary>
     /// Настройка получения данных аутентификации через keycloak

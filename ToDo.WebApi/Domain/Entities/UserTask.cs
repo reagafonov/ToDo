@@ -6,7 +6,7 @@ namespace ToDo.WebApi.Domain.Entities;
 /// <summary>
 /// Задача
 /// </summary>
-public class UserTask:BaseEntity
+public class UserTask:BaseOwnerEntity
 {
     /// <summary>
     /// Название

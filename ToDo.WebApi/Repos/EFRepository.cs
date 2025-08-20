@@ -53,9 +53,8 @@ public class EfRepository<TEntity, TFilterData>(DataContext context, IFilter<TEn
     /// Добавляет задачу в хранилище
     /// </summary>
     /// <param name="entity">Сущность задачи</param>
-    /// <param name="cancellation">Токен отмены</param>
     /// <returns>Идентификатор добавленной записи</returns>
-    public async Task AddAsync(TEntity entity, CancellationToken cancellation = default)
+    public void Add(TEntity entity)
     {
         context.Add(entity);
        
@@ -65,8 +64,7 @@ public class EfRepository<TEntity, TFilterData>(DataContext context, IFilter<TEn
     /// Обновляет задачу в хранилище
     /// </summary>
     /// <param name="entity">Новые данные со старым идентификатором</param>
-    /// <param name="cancellationToken">Токен отмены</param>
-    public async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
+    public void Update(TEntity entity)
     {
         context.Update(entity);
         // var oldValues = await context.Set<TEntity>().FindAsync(entity.Id, cancellationToken);

@@ -1,7 +1,7 @@
 using AutoMapper;
 using ToDo.WebApi.Abstractions;
 using ToDo.WebApi.Domain.Entities;
-using ToDo.WebApi.Repos.FiltersData;
+using ToDo.WebApi.Repos.UserTaskLists;
 using ToDo.WebApi.ServiceAbstractions;
 using ToDo.WebApi.ServiceDomain;
 
@@ -38,7 +38,7 @@ public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterDat
     {
         UserTaskList? userTaskList = mapper.Map<UserTaskList>(userTaskListDto);
         
-        await userTaskListRepository.AddAsync(userTaskList, cancellationToken);
+        userTaskListRepository.Add(userTaskList);
         
         await userTaskListRepository.SaveChangesAsync(cancellationToken);
         
@@ -63,7 +63,7 @@ public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterDat
         
         mapper.Map(userTaskListDto, currentData);
         
-        await userTaskListRepository.UpdateAsync(currentData, cancellationToken);
+        userTaskListRepository.Update(currentData);
         
         await userTaskListRepository.SaveChangesAsync(cancellationToken);
     }

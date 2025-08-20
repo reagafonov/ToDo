@@ -6,7 +6,7 @@ namespace ToDo.WebApi.Services;
 /// <summary>
 /// Реализация сервиса пользователей для одного пользователя
 /// </summary>
-public class DefaultUserService:IUserService
+public class DefaultUserService:IUserServiceClaims
 {
     /// <summary>
     /// Возвращает всегда одно и то же

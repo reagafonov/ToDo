@@ -28,5 +28,7 @@ public class MappingProfile:Profile
             .ForMember(dto => dto.Created, expression => expression.MapFrom(file => DateTime.Now))
             .ForMember(dto => dto.UserTaskId, expression => expression.Ignore())
             .ForMember(dto => dto.Contents, expression => expression.Ignore());
+
+        CreateMap<UserModel, UserDto>();
     }
 }

@@ -5,7 +5,7 @@ namespace ToDo.WebApi.Domain.Entities;
 /// <summary>
 /// Список пользователей
 /// </summary>
-public class UserTaskList:BaseEntity
+public class UserTaskList:BaseOwnerEntity
 {
     /// <summary>
     /// Название списка

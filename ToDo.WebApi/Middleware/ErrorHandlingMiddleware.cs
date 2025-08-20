@@ -45,6 +45,11 @@ public class ErrorHandlingMiddleware
             _logger.LogWarning(ex, ex.Message);
             await HandleUnauthorizedExceptionAsync(context, ex);
         }
+        catch (BadHttpRequestException ex)
+        {
+            _logger.LogWarning(ex, ex.Message);
+            await HandleBadRequestExceptionAsync(context, ex);
+        }
         catch (Exception ex)
         {
             _logger.LogError(ex, ex.Message);
@@ -88,7 +93,6 @@ public class ErrorHandlingMiddleware
         int code = StatusCodes.Status500InternalServerError;
         ErrorResponse result = new ErrorResponse
         {
-            Type = "https://api.example.com/errors/key-not-found",
             Title = "Ошибка на сервере",
 #if DEBUG
             Detail = ex.Message,
@@ -113,8 +117,7 @@ public class ErrorHandlingMiddleware
         int code = StatusCodes.Status401Unauthorized;
         ErrorResponse result = new ErrorResponse
         {
-            Type = "https://api.example.com/errors/key-not-found",
-            Title = "Ошибка на сервере",
+            Title = "Не авторизовано",
 #if DEBUG
             Detail = ex.Message,
 #else
@@ -124,6 +127,29 @@ public class ErrorHandlingMiddleware
         };
 
         context.Response.StatusCode = code;
+        return context.Response.WriteAsync(JsonConvert.SerializeObject(result));
+    }
+    
+    /// <summary>
+    /// Вывод для уже существующих данных
+    /// </summary>
+    /// <param name="context">контекст</param>
+    /// <param name="ex">Полученное исключение</param>
+    /// <returns></returns>
+    private static Task HandleBadRequestExceptionAsync(HttpContext context, BadHttpRequestException ex)
+    {
+        ErrorResponse result = new ErrorResponse
+        {
+            Title = "Ошибка двнных",
+#if DEBUG
+            Detail = ex.Message,
+#else
+            Detail = "Информация скрыта"
+#endif         
+            Status = ex.StatusCode
+        };
+
+        context.Response.StatusCode = ex.StatusCode;
         return context.Response.WriteAsync(JsonConvert.SerializeObject(result));
     }
 }

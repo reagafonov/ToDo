@@ -1,7 +1,7 @@
 using AutoMapper;
 using ToDo.WebApi.Abstractions;
 using ToDo.WebApi.Domain.Entities;
-using ToDo.WebApi.Repos.FiltersData;
+using ToDo.WebApi.Repos.UserTasks;
 using ToDo.WebApi.ServiceAbstractions;
 using ToDo.WebApi.ServiceDomain;
 
@@ -50,7 +50,7 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
     public async Task<Guid> AddAsync(UserTaskDto userTaskDto, CancellationToken cancellationToken)
     {
         UserTask? userTask = mapper.Map<UserTask>(userTaskDto);
-        await repository.AddAsync(userTask, cancellationToken);
+        repository.Add(userTask);
         await repository.SaveChangesAsync(cancellationToken);
         return userTask.Id;
     }
@@ -67,7 +67,7 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
         if (userTask == null)
             throw new KeyNotFoundException();
         mapper.Map(userTaskDto, userTask);
-        await repository.UpdateAsync(userTask, cancellationToken);
+        repository.Update(userTask);
         await repository.SaveChangesAsync(cancellationToken);
     }
 
@@ -83,7 +83,7 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
         if (userTask == null)
             throw new KeyNotFoundException();
         userTask.IsCompleted = isCompleted;
-        await repository.UpdateAsync(userTask, cancellationToken);
+        repository.Update(userTask);
         await repository.SaveChangesAsync(cancellationToken);
     }
 

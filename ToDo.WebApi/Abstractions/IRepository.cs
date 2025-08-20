@@ -30,15 +30,13 @@ public interface IRepository<TEntity,in TFilterData> where TEntity : BaseEntity
     /// Добавляет задачу в хранилище
     /// </summary>
     /// <param name="entity">Сущность задачи</param>
-    /// <param name="cancellation">Токен отмены</param>
-    Task AddAsync(TEntity entity, CancellationToken cancellation = default);
+    void Add(TEntity entity);
 
     /// <summary>
     /// Обновляет задачу в хранилище
     /// </summary>
     /// <param name="entity">Новые данные со старым идентификатором</param>
-    /// <param name="cancellation">Токен отмены</param>
-    Task UpdateAsync(TEntity entity, CancellationToken cancellation = default);
+    void Update(TEntity entity);
 
     /// <summary>
     /// Удаляет задачу из хранилища
