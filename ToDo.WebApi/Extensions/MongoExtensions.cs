@@ -1,6 +1,5 @@
 using MongoDB.Driver;
 using ToDo.WebApi.Domain;
-using ToDo.WebApi.MongoDomain;
 
 namespace ToDo.WebApi.Extensions;
 
@@ -21,8 +20,6 @@ public static class MongoExtensions
         
         services.AddScoped<IMongoDatabase>(s=> s.GetRequiredService<IMongoClient>().GetDatabase(configuration.GetValue<string>("Mongo:DbName")));
 
-        services.AddScoped(s => new MongoDbContext(s.GetRequiredService<IMongoDatabase>()));
-        
         return services;
     }
 }
