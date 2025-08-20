@@ -93,7 +93,7 @@ public class MongoDocumentService(IMongoDatabase database):IDocumentService
     /// <returns></returns>
     public async Task<UserTaskFileSimpleDto> GetInfoByIdAsync(string id, CancellationToken cancellationToken = default)
     {
-        var objectId = new ObjectId(id);
+        ObjectId objectId = new ObjectId(id);
         GridFSFileInfo?  filesCollection =
             await database.GetCollection<GridFSFileInfo>("fs.files").Find(x=> x.Id == objectId).FirstOrDefaultAsync(cancellationToken);
 
