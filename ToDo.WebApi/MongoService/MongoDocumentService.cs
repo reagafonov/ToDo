@@ -47,12 +47,12 @@ public class MongoDocumentService(IMongoDatabase database):IDocumentService
     {
         GridFSBucket gridFsBucket = new GridFSBucket(database);
 
-        ObjectId uploadFromStreamAsync = await gridFsBucket.UploadFromStreamAsync(document.Name, document.Contents, new GridFSUploadOptions()
+        ObjectId id = await gridFsBucket.UploadFromStreamAsync(document.Name, document.Contents, new GridFSUploadOptions()
         {
             Metadata = toBson(document)
         }, cancellationToken);
         
-        return uploadFromStreamAsync.ToString();
+        return id.ToString();
     }
 
     /// <summary>
