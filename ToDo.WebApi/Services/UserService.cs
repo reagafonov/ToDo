@@ -8,7 +8,7 @@ using ToDo.WebApi.ServiceDomain;
 namespace ToDo.WebApi.Services;
 
 /// <summary>
-/// 
+/// Сервис пользователей
 /// </summary>
 public class UserService(IRepository<User,UserFilterData> repository, IMapper mapper) : IUserService
 {

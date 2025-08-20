@@ -1,17 +1,23 @@
-using System.Security.Claims;
-using ToDo.WebApi.Domain.Entities;
+using ToDo.WebApi.ServiceDomain;
 
 namespace ToDo.WebApi.ServiceAbstractions;
 
-/// <summary>
-/// Сервис данных пользователя
-/// </summary>
 public interface IUserService
 {
     /// <summary>
-    /// Получает идентификатор текущего пользователя
+    /// Регистрирует пользователя
     /// </summary>
-    /// <param name="user">Данные пользователя, если есть</param>
-    /// <returns>Идентификатор текущего пользователя</returns>
-    Task<string> GetCurrentUserIdAsync(ClaimsPrincipal? user);
+    /// <param name="userDto">Данные пользователя</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns></returns>
+    Task<bool> RegisterAsync(UserDto userDto, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Проверка пароля и логина
+    /// </summary>
+    /// <param name="username">логин</param>
+    /// <param name="password">пароль</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns></returns>
+    Task<UserDto?> ValidateAsync(string username, string password, CancellationToken cancellationToken);
 }

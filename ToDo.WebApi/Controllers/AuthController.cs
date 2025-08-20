@@ -18,7 +18,7 @@ namespace ToDo.WebApi.Controllers;
 /// </summary>
 [ApiController]
 [Route("/v1/[controller]")]
-public class AuthController(IUserService _userService, IMapper mapper, IOptions<JwtOptions> options) : ControllerBase
+public class AuthController(IUserService userService, IMapper mapper, IOptions<JwtOptions> options) : ControllerBase
 {
     private readonly JwtOptions _jwtOptions = options.Value ?? throw new ArgumentNullException("Не указанны опции JWT");
     
@@ -31,7 +31,7 @@ public class AuthController(IUserService _userService, IMapper mapper, IOptions<
     public async Task<IActionResult> Register([FromBody] UserModel user, CancellationToken token)
     {
         UserDto? dto = mapper.Map<UserDto>(user);
-        bool ok = await _userService.RegisterAsync(dto,token);
+        bool ok = await userService.RegisterAsync(dto,token);
         if (!ok) throw new  BadHttpRequestException("Пользователь уже существует", StatusCodes.Status409Conflict);
         return Ok("Регистрация успешна");
     }
@@ -44,7 +44,7 @@ public class AuthController(IUserService _userService, IMapper mapper, IOptions<
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserModel user, CancellationToken cancellationToken)
     {
-        UserDto? found = await _userService.ValidateAsync(user.Username, user.Password, cancellationToken);
+        UserDto? found = await userService.ValidateAsync(user.Username, user.Password, cancellationToken);
         if (found == null) return Unauthorized();
 
         Claim[] claims = new[] { new Claim(ClaimTypes.Name, user.Username) };
