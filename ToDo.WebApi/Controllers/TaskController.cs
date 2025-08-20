@@ -31,7 +31,7 @@ public class TaskController(IUserTaskService userTaskService, IMapper mapper, IU
             UserTaskListId = listId
         };
         
-        var allTasks = await userTaskService.GetUserTasksAsync(userTaskFilterDto, cancellationToken);
+        List<UserTaskDto> allTasks = await userTaskService.GetUserTasksAsync(userTaskFilterDto, cancellationToken);
         return mapper.Map<List<UserTaskSmallModel>>(allTasks);
     }
     
@@ -75,7 +75,7 @@ public class TaskController(IUserTaskService userTaskService, IMapper mapper, IU
     [HttpPost]
     public async Task<Guid> AddAsync([FromBody] UserTaskAddModel userTaskModel, CancellationToken cancellationToken)
     {
-        UserTaskDto dto = mapper.Map<UserTaskDto>(userTaskModel);
+        UserTaskDto? dto = mapper.Map<UserTaskDto>(userTaskModel);
         dto.OwnerUserId = await userService.GetCurrentUserIdAsync(User);
         Guid userTaskId = await userTaskService.AddAsync(dto, cancellationToken);
         return userTaskId;

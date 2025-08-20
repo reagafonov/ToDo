@@ -36,7 +36,7 @@ public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterDat
     /// <returns>Идентификатор созданного списка</returns>
     public async Task<Guid> AddUserTaskListAsync(UserTaskListDto userTaskListDto, CancellationToken cancellationToken)
     {
-        UserTaskList userTaskList = mapper.Map<UserTaskList>(userTaskListDto);
+        UserTaskList? userTaskList = mapper.Map<UserTaskList>(userTaskListDto);
         
         await userTaskListRepository.AddAsync(userTaskList, cancellationToken);
         

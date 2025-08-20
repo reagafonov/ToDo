@@ -27,7 +27,7 @@ public class EfRepository<TEntity, TFilterData>(DataContext context, IFilter<TEn
     public async Task<List<TEntity>> GetFilteredAsync(TFilterData filterData,
         CancellationToken cancellationToken)
     {
-        IQueryable<TEntity>? query = context.Set<TEntity>().AsQueryable();
+        IQueryable<TEntity> query = context.Set<TEntity>().AsQueryable();
         query = filter.Apply(filterData, query);
         return await query.AsNoTracking().ToListAsync(cancellationToken);
     }

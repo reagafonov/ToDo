@@ -106,7 +106,7 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
     /// <returns>Удаленные идентификаторы</returns>
     public async Task<IEnumerable<Guid>> DeleteRangeAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
     {
-        List<UserTask> userTasks = await repository.GetFilteredAsync(new UserTaskFilterData()
+        List<UserTask>? userTasks = await repository.GetFilteredAsync(new UserTaskFilterData()
                                                 {
                                                     Ids = ids
                                                 }, cancellationToken);

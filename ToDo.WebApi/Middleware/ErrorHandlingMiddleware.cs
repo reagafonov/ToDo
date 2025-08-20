@@ -60,8 +60,8 @@ public class ErrorHandlingMiddleware
     /// <returns></returns>
     private static Task Handle404ExceptionAsync(HttpContext context, Exception ex)
     {
-        var code = StatusCodes.Status404NotFound;
-        var result = new ErrorResponse
+        int code = StatusCodes.Status404NotFound;
+        ErrorResponse result = new ErrorResponse
         {
             Type = "https://api.example.com/errors/key-not-found",
             Title = "Key not found",
@@ -85,8 +85,8 @@ public class ErrorHandlingMiddleware
     /// <returns></returns>
     private static Task Handle5xxExceptionAsync(HttpContext context, Exception ex)
     {
-        var code = StatusCodes.Status500InternalServerError;
-        var result = new ErrorResponse
+        int code = StatusCodes.Status500InternalServerError;
+        ErrorResponse result = new ErrorResponse
         {
             Type = "https://api.example.com/errors/key-not-found",
             Title = "Ошибка на сервере",
@@ -110,8 +110,8 @@ public class ErrorHandlingMiddleware
     /// <returns></returns>
     private static Task HandleUnauthorizedExceptionAsync(HttpContext context, Exception ex)
     {
-        var code = StatusCodes.Status401Unauthorized;
-        var result = new ErrorResponse
+        int code = StatusCodes.Status401Unauthorized;
+        ErrorResponse result = new ErrorResponse
         {
             Type = "https://api.example.com/errors/key-not-found",
             Title = "Ошибка на сервере",

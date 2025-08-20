@@ -61,7 +61,7 @@ public class TaskListController(IUserTaskListService service, IMapper mapper, IL
         logger.LogInformation("Добавление списка задач");
         logger.LogDebug(taskListModel.ToString());
         
-        UserTaskListDto dto = mapper.Map<UserTaskListDto>(taskListModel);
+        UserTaskListDto? dto = mapper.Map<UserTaskListDto>(taskListModel);
         dto.OwnerUserId = await userService.GetCurrentUserIdAsync(User);
         
         return await service.AddUserTaskListAsync(dto, cancellationToken);
@@ -82,7 +82,7 @@ public class TaskListController(IUserTaskListService service, IMapper mapper, IL
         logger.LogDebug("Данные");
         logger.LogDebug(taskListModel.ToString());
         
-        UserTaskListDto dto = mapper.Map<UserTaskListDto>(taskListModel);
+        UserTaskListDto? dto = mapper.Map<UserTaskListDto>(taskListModel);
         dto.Id = id;
         dto.OwnerUserId = await userService.GetCurrentUserIdAsync(User);
         
