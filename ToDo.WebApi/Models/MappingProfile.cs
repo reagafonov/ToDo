@@ -19,5 +19,14 @@ public class MappingProfile:Profile
         CreateMap<UserTaskListAddModel, UserTaskListDto>();
         
         CreateMap<UserTaskListDto, UserTaskListModel>();
+
+        CreateMap<UserTaskFileSimpleDto, UserTaskFileModel>();
+
+        CreateMap<IFormFile, UserTaskFileDto>()
+            .ForMember(dto => dto.Name, expression => expression.MapFrom(file => file.Name))
+            .ForMember(dto => dto.Id, expression => expression.MapFrom(file => Guid.NewGuid()))
+            .ForMember(dto => dto.Created, expression => expression.MapFrom(file => DateTime.Now))
+            .ForMember(dto => dto.UserTaskId, expression => expression.Ignore())
+            .ForMember(dto => dto.Contents, expression => expression.Ignore());
     }
 }

@@ -1,6 +1,7 @@
 using ToDo.WebApi.Abstractions;
 using ToDo.WebApi.Abstractions.FiltersData;
 using ToDo.WebApi.Domain.Entities;
+using ToDo.WebApi.MongoService;
 using ToDo.WebApi.Repos;
 using ToDo.WebApi.Repos.CommonFilters;
 using ToDo.WebApi.Repos.FiltersData;
@@ -67,6 +68,9 @@ public static class DiExtensions
 
         //Сервер пользователей
         services.AddSingleton<IUserService, DefaultUserService>();
+        
+        //сервер документов
+        services.AddScoped<IDocumentService, MongoDocumentService>();
         
         return services;
     }
