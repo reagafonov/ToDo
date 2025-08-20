@@ -17,7 +17,8 @@ builder.Services
     //.RegisterKeycloakAuthentication(configuration)
     .RegisterSwagger()
     .RegisterControllers()
-    .RegiserAuthorization();
+    .RegiserAuthorization()
+    .RegisterMongoServices(configuration);
 
 builder.Host.RegisterSerilogConsole();
 
