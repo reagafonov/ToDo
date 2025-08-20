@@ -10,4 +10,5 @@ public record UserTaskListAddModel
     /// </summary>
     /// <remarks>Обязательно</remarks>
     public required string Name { get; set; }
+    
 }

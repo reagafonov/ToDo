@@ -1,3 +1,5 @@
+using ToDo.WebApi.Domain.Entities;
+
 namespace ToDo.WebApi.ServiceDomain;
 
 /// <summary>
@@ -39,4 +41,24 @@ public class UserTaskDto
     /// Признак удаления
     /// </summary>
     public bool IsDeleted { get; set; }
+    
+    /// <summary>
+    /// Дата создания
+    /// </summary>
+    public DateTime Created { get; set; }
+    
+    /// <summary>
+    /// Дата выполнения
+    /// </summary>
+    public DateTime? CompleteDate { get; set; }
+    
+    /// <summary>
+    /// Приоритет
+    /// </summary>
+    public UserTaskPriority? Priority { get; set; }
+    
+    /// <summary>
+    /// Порядок вывода
+    /// </summary>
+    public int Order { get; set; }
 }

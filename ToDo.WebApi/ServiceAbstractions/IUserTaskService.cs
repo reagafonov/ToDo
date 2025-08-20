@@ -68,5 +68,13 @@ public interface IUserTaskService
     /// <param name="id">Идентификатор задачи</param>
     /// <param name="cancellationToken">Токен отмены</param>
     Task UndeleteAsync(Guid id, CancellationToken cancellationToken);
-    
+
+    /// <summary>
+    /// Получение данных задачи
+    /// </summary>
+    /// <param name="listId">Идентификатор списка</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns>Данные задачи</returns>
+    Task<IEnumerable<UserTaskDto>> GetUserTasks(Guid listId,
+        CancellationToken cancellationToken);
 }

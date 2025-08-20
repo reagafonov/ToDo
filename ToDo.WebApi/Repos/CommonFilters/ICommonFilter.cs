@@ -1,4 +1,5 @@
 using ToDo.WebApi.Abstractions;
+using ToDo.WebApi.Domain.Entities;
 
 namespace ToDo.WebApi.Repos.CommonFilters;
 

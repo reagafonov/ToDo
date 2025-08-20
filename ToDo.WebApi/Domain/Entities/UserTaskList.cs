@@ -16,4 +16,15 @@ public class UserTaskList:BaseEntity
     /// Задачи списка
     /// </summary>
     public ICollection<UserTask> UserTasks { get; set; }
+   
+    /// <summary>
+    /// Тип сортировки
+    /// </summary>
+    public UserListOrderTypeEnum OrderType { get; set; }
+    
+    /// <summary>
+    /// Направление сортировки
+    /// </summary>
+    public OrderDirectionEnum OrderDirection { get; set; }
+    
 }

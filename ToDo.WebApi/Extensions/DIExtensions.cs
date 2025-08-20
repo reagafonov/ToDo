@@ -66,6 +66,9 @@ public static class DiExtensions
         //Сервис списков
         services.AddScoped<IUserTaskListService, UserTaskListService>();
 
+        //Сервис сортировки
+        services.AddScoped<IUserTaskListOrderService, UserTaskListOrderService>();
+
         //Сервер пользователей
         services.AddSingleton<IUserService, DefaultUserService>();
         

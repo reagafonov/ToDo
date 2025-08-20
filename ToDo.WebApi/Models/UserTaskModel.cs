@@ -1,3 +1,5 @@
+using ToDo.WebApi.Domain.Entities;
+
 namespace ToDo.WebApi.Models;
 
 /// <summary>
@@ -27,4 +29,9 @@ public class UserTaskModel:BaseOutputModel
     /// </summary>
     public bool IsCompleted { get; set; }
     
+    /// <summary>
+    /// Приоритет
+    /// </summary>
+    public UserTaskPriority? Priority { get; set; }
+
 }
