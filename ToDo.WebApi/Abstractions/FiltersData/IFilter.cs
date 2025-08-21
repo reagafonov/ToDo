@@ -1,3 +1,5 @@
+using ToDo.WebApi.Domain.Entities;
+
 namespace ToDo.WebApi.Abstractions.FiltersData;
 
 /// <summary>

@@ -1,3 +1,5 @@
+using ToDo.WebApi.Domain.Entities;
+
 namespace ToDo.WebApi.Models;
 
 /// <summary>
@@ -21,4 +23,14 @@ public class UserTaskListModel:BaseOutputModel
     /// Признак удаления
     /// </summary>
     public bool IsDeleted { get; set; }
+    
+    /// <summary>
+    /// Тип сортировки
+    /// </summary>
+    public UserListOrderTypeEnum OrderType { get; set; }
+    
+    /// <summary>
+    /// Направление сортировки
+    /// </summary>
+    public OrderDirectionEnum OrderDirection { get; set; }
 }

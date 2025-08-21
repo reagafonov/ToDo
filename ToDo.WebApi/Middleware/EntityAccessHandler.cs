@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using ToDo.WebApi.Abstractions;
 using ToDo.WebApi.Domain;
+using ToDo.WebApi.Domain.Entities;
 using ToDo.WebApi.ServiceAbstractions;
 
 namespace ToDo.WebApi.Middleware;

@@ -12,9 +12,35 @@ namespace ToDo.WebApi.Services;
 /// </summary>
 /// <param name="repository">Репозиторий задач</param>
 /// <param name="mapper">Автомаппер</param>
-public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repository, IMapper mapper):IUserTaskService
+public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repository, IMapper mapper, IUserTaskListOrderService orderService):IUserTaskService
 {
 
+    /// <summary>
+    /// Получение данных задачи
+    /// </summary>
+    /// <param name="listId">Идентификатор списка</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns>Данные задачи</returns>
+    public async Task<IEnumerable<UserTaskDto>> GetUserTasks(Guid listId,
+        CancellationToken cancellationToken)
+    {
+        UserTaskFilterDto filter = new()
+        {
+            UserTaskListId = listId,
+            WithDeleted = false,
+        };
+        
+        UserTaskFilterData? filterData = mapper.Map<UserTaskFilterData>(filter);
+        
+        IEnumerable<UserTask?> tasks =  await repository.GetFilteredAsync(filterData, cancellationToken);
+        
+        List<UserTaskDto> dtos = mapper.Map<List<UserTaskDto>>(tasks);
+        
+        List<UserTaskDto> userTaskDtos = await orderService.OrderAsync(listId, dtos, cancellationToken);
+        
+        return userTaskDtos;
+    }
+    
     /// <summary>
     /// Получение данных по таске
     /// </summary>
@@ -28,18 +54,23 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
             throw new KeyNotFoundException();
         return mapper.Map<UserTaskDto>(userTask);
     }
-    
+
     /// <summary>
     /// Фильтрация по различным полям
     /// </summary>
     /// <param name="filter">Класс фильтра</param>
+    /// <param name="ordered">Если нужна сортировка</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Отфильтрованные данные задачи</returns>
-    public async Task<List<UserTaskDto>> GetUserTasksAsync(UserTaskFilterDto filter, CancellationToken cancellationToken)
+    public async Task<List<UserTaskDto>> GetUserTasksAsync(UserTaskFilterDto filter, bool ordered,
+        CancellationToken cancellationToken)
     {
         UserTaskFilterData? filterData = mapper.Map<UserTaskFilterData>(filter);
         IEnumerable<UserTask?> tasks =  await repository.GetFilteredAsync(filterData, cancellationToken);
-        return mapper.Map<List<UserTaskDto>>(tasks);
+        List<UserTaskDto> dtos = mapper.Map<List<UserTaskDto>>(tasks);
+        if (filterData.UserTaskListId.HasValue)
+            dtos = await orderService.OrderAsync(filter.UserTaskListId, dtos, cancellationToken);
+        return dtos;
     }
     
     /// <summary>
@@ -49,6 +80,7 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
     /// <param name="cancellationToken">Токен отмены</param>
     public async Task<Guid> AddAsync(UserTaskDto userTaskDto, CancellationToken cancellationToken)
     {
+        userTaskDto.Created = DateTime.Now;
         UserTask? userTask = mapper.Map<UserTask>(userTaskDto);
         await repository.AddAsync(userTask, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
@@ -80,10 +112,20 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
     public async Task MarkAsCompletedAsync(Guid id, bool isCompleted, CancellationToken cancellationToken)
     {
         UserTask? userTask = await repository.GetAsync(id, cancellationToken);
+       
         if (userTask == null)
             throw new KeyNotFoundException();
-        userTask.IsCompleted = isCompleted;
+        
+        UserTaskDto userTaskDto = mapper.Map<UserTaskDto>(userTask);
+        if (isCompleted == userTaskDto.IsCompleted)
+            return;
+        
+        userTaskDto.IsCompleted = isCompleted;
+        userTaskDto.CompleteDate = isCompleted ? DateTime.Now : null; 
+        mapper.Map(userTaskDto, userTask);
+        
         await repository.UpdateAsync(userTask, cancellationToken);
+        
         await repository.SaveChangesAsync(cancellationToken);
     }
 
@@ -128,4 +170,5 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
         await repository.RestoreAsync(id, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
     }
+    
 }
