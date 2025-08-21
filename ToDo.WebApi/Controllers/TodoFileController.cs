@@ -23,7 +23,7 @@ public class TodoFileController(IDocumentService fileService, ILogger<TodoFileCo
     {
         logger.LogInformation("Получение файлов для задачи {taskId}", taskId);
         
-        var result = await fileService.GetFromTaskAsync(taskId, cancellationToken);
+        List<UserTaskFileSimpleDto> result = await fileService.GetFromTaskAsync(taskId, cancellationToken);
         
         return mapper.Map<List<UserTaskFileModel>>(result);
     }
@@ -39,10 +39,10 @@ public class TodoFileController(IDocumentService fileService, ILogger<TodoFileCo
     {
         logger.LogInformation("Загрузка файла {id}", id);
         
-        var info = await fileService.GetInfoByIdAsync(id, cancellationToken);
+        UserTaskFileSimpleDto info = await fileService.GetInfoByIdAsync(id, cancellationToken);
 
         //без using
-        var result = await fileService.GetContentsByIdAsync(id, cancellationToken);
+        Stream result = await fileService.GetContentsByIdAsync(id, cancellationToken);
         
         return File(result, contentType: "application/octet-stream", info.Name);
     }
@@ -61,11 +61,11 @@ public class TodoFileController(IDocumentService fileService, ILogger<TodoFileCo
         if (file == null || file.Length == 0)
             return BadRequest("Файл не выбран");
         
-        var dto = mapper.Map<UserTaskFileDto>(file);
+        UserTaskFileDto? dto = mapper.Map<UserTaskFileDto>(file);
         dto.UserTaskId = taskId;
         dto.Name = fileName;
         
-        await using var stream = file.OpenReadStream();
+        await using Stream stream = file.OpenReadStream();
         
         dto.Contents = stream;
         

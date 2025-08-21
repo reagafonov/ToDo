@@ -20,6 +20,8 @@ public static class MongoExtensions
         
         services.AddScoped<IMongoDatabase>(s=> s.GetRequiredService<IMongoClient>().GetDatabase(configuration.GetValue<string>("Mongo:DbName")));
 
+        services.AddScoped(s => new MongoContext(s.GetRequiredService<IMongoDatabase>()));
+        
         return services;
     }
 }

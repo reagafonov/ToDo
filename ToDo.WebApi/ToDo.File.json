@@ -124,7 +124,8 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": "postman-cloud:///1f07d8e3-b116-4870-9478-9cfced3e8c82"
+							"enabled": true,
+							"src": "appsettings.Development.json"
 						},
 						{
 							"key": "fileName",

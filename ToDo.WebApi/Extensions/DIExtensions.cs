@@ -73,7 +73,7 @@ public static class DiExtensions
         services.AddSingleton<IUserService, DefaultUserService>();
         
         //сервер документов
-        services.AddScoped<IDocumentService, MongoDocumentService>();
+        services.AddScoped<IDocumentService, MongoSmallDocumentService>();
         
         return services;
     }
