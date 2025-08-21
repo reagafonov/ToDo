@@ -19,10 +19,9 @@ public class UserTaskFileSimpleDto
     /// Название
     /// </summary>
     public required string Name { get; set; }
-    
+
     /// <summary>
     /// Дата создания
     /// </summary>
     public DateTime Created { get; set; }
-
 }

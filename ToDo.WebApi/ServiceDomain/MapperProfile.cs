@@ -11,6 +11,9 @@ public class MapperProfile:Profile
     {
         CreateMap<UserTaskDto, UserTask>()
             .ForMember(userTask => userTask.TypeUserTaskList, expression => expression.Ignore())
+            .ForMember(userTask => userTask.Created, expression => expression.MapFrom(dto=>dto.Created.ToUniversalTime()))
+            .ForMember(userTask => userTask.CompleteDate, 
+                expression => expression.MapFrom(dto=>dto.CompleteDate.HasValue ? dto.CompleteDate.Value.ToUniversalTime(): (DateTime?)null))
             .ReverseMap();
 
         CreateMap<UserTaskFilterDto, UserTaskFilterData>()

@@ -47,5 +47,5 @@ public class UserTask:BaseEntity
     /// <summary>
     /// Приоритет
     /// </summary>
-    public UserTaskPriority Priority { get; set; }
+    public UserTaskPriority? Priority { get; set; }
 }

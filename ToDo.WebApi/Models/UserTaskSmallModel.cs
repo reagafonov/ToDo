@@ -31,4 +31,14 @@ public class UserTaskSmallModel:BaseOutputModel
     /// Порядок вывода
     /// </summary>
     public int Order { get; set; }
+    
+    /// <summary>
+    /// Дата создания
+    /// </summary>
+    public DateTime Created { get; set; }
+    
+    /// <summary>
+    /// Дата выполнения
+    /// </summary>
+    public DateTime? CompleteDate { get; set; }
 }

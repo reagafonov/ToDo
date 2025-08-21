@@ -54,18 +54,23 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
             throw new KeyNotFoundException();
         return mapper.Map<UserTaskDto>(userTask);
     }
-    
+
     /// <summary>
     /// Фильтрация по различным полям
     /// </summary>
     /// <param name="filter">Класс фильтра</param>
+    /// <param name="ordered">Если нужна сортировка</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Отфильтрованные данные задачи</returns>
-    public async Task<List<UserTaskDto>> GetUserTasksAsync(UserTaskFilterDto filter, CancellationToken cancellationToken)
+    public async Task<List<UserTaskDto>> GetUserTasksAsync(UserTaskFilterDto filter, bool ordered,
+        CancellationToken cancellationToken)
     {
         UserTaskFilterData? filterData = mapper.Map<UserTaskFilterData>(filter);
         IEnumerable<UserTask?> tasks =  await repository.GetFilteredAsync(filterData, cancellationToken);
-        return mapper.Map<List<UserTaskDto>>(tasks);
+        List<UserTaskDto> dtos = mapper.Map<List<UserTaskDto>>(tasks);
+        if (filterData.UserTaskListId.HasValue)
+            dtos = await orderService.OrderAsync(filter.UserTaskListId, dtos, cancellationToken);
+        return dtos;
     }
     
     /// <summary>

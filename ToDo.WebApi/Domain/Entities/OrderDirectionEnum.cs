@@ -8,10 +8,10 @@ public enum OrderDirectionEnum
     /// <summary>
     /// По возрастанию
     /// </summary>
-    Ascending = 1,
+    Ascending = 0,
 
     /// <summary>
     /// По убыванию
     /// </summary>
-    Descending = 2,
+    Descending = 1,
 }

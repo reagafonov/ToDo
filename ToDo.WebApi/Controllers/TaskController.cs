@@ -31,7 +31,7 @@ public class TaskController(IUserTaskService userTaskService, IMapper mapper, IU
             UserTaskListId = listId
         };
         
-        List<UserTaskDto> allTasks = await userTaskService.GetUserTasksAsync(userTaskFilterDto, cancellationToken);
+        List<UserTaskDto> allTasks = await userTaskService.GetUserTasksAsync(userTaskFilterDto, true, cancellationToken);
         return mapper.Map<List<UserTaskSmallModel>>(allTasks);
     }
     
@@ -48,7 +48,7 @@ public class TaskController(IUserTaskService userTaskService, IMapper mapper, IU
         {
             UserTaskListId = listId
         };
-        List<UserTaskDto> userTasksAsync = await userTaskService.GetUserTasksAsync(filter, cancellationToken);
+        List<UserTaskDto> userTasksAsync = await userTaskService.GetUserTasksAsync(filter, true, cancellationToken);
         return mapper.Map<List<UserTaskSmallModel>>(userTasksAsync);
     }
 

@@ -1,8 +1,12 @@
+using System.ComponentModel;
+using System.Reflection;
+
 namespace ToDo.WebApi.Domain.Entities;
 
 /// <summary>
 /// Приоритет задачи
 /// </summary>
+[DefaultValue(Medium)]
 public enum UserTaskPriority
 {
     /// <summary>
@@ -13,6 +17,7 @@ public enum UserTaskPriority
     /// <summary>
     /// Средний
     /// </summary>
+   
     Medium = 2,
 
     /// <summary>

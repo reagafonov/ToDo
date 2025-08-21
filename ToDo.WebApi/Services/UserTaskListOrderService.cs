@@ -31,7 +31,7 @@ public class UserTaskListOrderService(IRepository<UserTaskList, UserTaskListFilt
         if (taskList == null)
             throw new KeyNotFoundException();
 
-        UserTaskListDto taskListDto = mapper.Map<UserTaskListDto>(tasks);
+        UserTaskListDto taskListDto = mapper.Map<UserTaskListDto>(taskList);
         
         List<UserTaskDto> sortedTasks;
         switch (taskListDto.OrderType)

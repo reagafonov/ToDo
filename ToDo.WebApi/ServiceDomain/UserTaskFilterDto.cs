@@ -34,4 +34,5 @@ public struct UserTaskFilterDto
     /// Включать удаленные
     /// </summary>
     public bool WithDeleted { get; set; }
+
 }

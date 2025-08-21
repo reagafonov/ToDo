@@ -11,9 +11,11 @@ public interface IUserTaskService
     /// Фильтрация по различным полям
     /// </summary>
     /// <param name="filter">Класс фильтра</param>
+    /// <param name="ordered">Если нужна сортировка</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Отфильтрованные данные задачи</returns>
-    Task<List<UserTaskDto>> GetUserTasksAsync(UserTaskFilterDto filter, CancellationToken cancellationToken);
+    Task<List<UserTaskDto>> GetUserTasksAsync(UserTaskFilterDto filter, bool ordered,
+        CancellationToken cancellationToken);
 
     /// <summary>
     /// Получение данных по таске

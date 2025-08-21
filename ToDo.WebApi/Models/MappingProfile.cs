@@ -11,7 +11,7 @@ public class MappingProfile:Profile
     public MappingProfile()
     {
         CreateMap<UserTaskAddModel, UserTaskDto>();
-        
+
         CreateMap<UserTaskDto, UserTaskModel>();
         
         CreateMap<UserTaskDto, UserTaskSmallModel>();
