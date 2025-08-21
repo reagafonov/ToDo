@@ -1,4 +1,5 @@
 using System.Data;
+using AutoMapper;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using ToDo.WebApi.Domain;
@@ -10,7 +11,7 @@ namespace ToDo.WebApi.MongoService;
 /// <summary>
 /// Реализация сервиса для работы с маленькими файлами
 /// </summary>
-public class MongoSmallDocumentService(MongoContext context) : IDocumentService
+public class MongoSmallDocumentService(MongoContext context, IMapper mapper) : IDocumentService
 {
     /// <summary>
     /// Название поля для даты создания
@@ -60,20 +61,9 @@ public class MongoSmallDocumentService(MongoContext context) : IDocumentService
         List<BsonDocument>? files = await _collection.Find(x => x[UserTaskIdFieldName].AsString == taskId)
             .ToListAsync(cancellationToken);
 
-        List<UserTaskFileSimpleDto> dtos = files.Select(GetUserTaskFileSimpleDto).ToList();
+        List<UserTaskFileSimpleDto> dtos = files.Select(mapper.Map<UserTaskFileSimpleDto>).ToList();
 
         return dtos;
-    }
-
-    private static UserTaskFileSimpleDto GetUserTaskFileSimpleDto(BsonDocument file)
-    {
-        return new UserTaskFileSimpleDto
-        {
-            Name = file.GetElement(NameFieldName).Value.ToString()!,
-            UserTaskId = Guid.Parse(file.GetElement(UserTaskIdFieldName).Value.ToString()!),
-            Created = file[UploadDateFieldName].AsLocalTime,
-            Id = file.GetElement(IdFieldName).Value.ToString()!,
-        };
     }
 
     /// <summary>
@@ -110,7 +100,7 @@ public class MongoSmallDocumentService(MongoContext context) : IDocumentService
         if (file == null)
             throw new KeyNotFoundException($"File with id {id} not found");
 
-        UserTaskFileSimpleDto dto = GetUserTaskFileSimpleDto(file);
+        UserTaskFileSimpleDto dto = mapper.Map<UserTaskFileSimpleDto>(file);
 
         return dto;
     }
