@@ -15,16 +15,21 @@ builder.Services
     .RegisterServices()
     .RegisterEntityFramework(configuration)
     //.RegisterKeycloakAuthentication(configuration)
+    .RegisterCors()
     .RegisterSwagger()
     .RegisterControllers()
     .RegiserAuthorization()
     .RegisterMongoServices(configuration);
+
+
 
 builder.Host.RegisterSerilogConsole();
 
 WebApplication app = builder.Build();
 
 app.AutoApplyMigrations();
+
+app.RegisterCors();
 
 //app.UseKeycloakAuthentication();
 
