@@ -82,12 +82,28 @@ public class TaskController(IUserTaskService userTaskService, IMapper mapper, IU
     }
 
     /// <summary>
+    /// Изменение задачи
+    /// </summary>
+    /// <param name="id">Идентификатор</param>
+    /// <param name="userTaskModel">Данные задачи</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns>Идентификатор новой задачи</returns>
+    [HttpPut("{id:guid}")]
+    public async Task UpdateAsync([FromRoute]Guid id, [FromBody] UserTaskUpdateModel userTaskModel, CancellationToken cancellationToken)
+    {
+        UserTaskDto? dto = mapper.Map<UserTaskDto>(userTaskModel);
+        dto.OwnerUserId = await userService.GetCurrentUserIdAsync(User);
+        dto.Id = id;
+        await userTaskService.EditAsync(dto, cancellationToken);
+    }
+
+    /// <summary>
     /// Пометка задачи как выполненной
     /// </summary>
     /// <param name="id">Идентификатор задачи</param>
     /// <param name="cancellationToken">Токен отмены</param>
     [HttpPatch("{id:guid}/complete")]
-    public async Task Complete([FromRoute]Guid id, CancellationToken cancellationToken)
+    public async Task CompleteAsync([FromRoute]Guid id, CancellationToken cancellationToken)
     {
         await userTaskService.MarkAsCompletedAsync(id,true, cancellationToken);
     }

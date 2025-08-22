@@ -43,5 +43,10 @@ public class UserTaskModel:BaseOutputModel
     /// Дата выполнения
     /// </summary>
     public DateTime? CompleteDate { get; set; }
+    
+    /// <summary>
+    /// Идентификатор списка задач
+    /// </summary>
+    public Guid? UserTaskListId { get; set; }
 
 }

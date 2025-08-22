@@ -8,6 +8,11 @@ namespace ToDo.WebApi.Models;
 public class UserTaskSmallModel:BaseOutputModel
 {
     /// <summary>
+    /// Идентификатор
+    /// </summary>
+    public required Guid Id { get; set; }
+    
+    /// <summary>
     /// Название
     /// </summary>
     public required string Name { get; init; }
