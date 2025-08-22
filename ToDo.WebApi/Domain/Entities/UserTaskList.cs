@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using ToDo.WebApi.Abstractions;
 
 namespace ToDo.WebApi.Domain.Entities;

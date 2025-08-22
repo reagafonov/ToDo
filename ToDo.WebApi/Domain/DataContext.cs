@@ -35,8 +35,15 @@ public class DataContext:DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserTask>().HasQueryFilter(task => !task.IsDeleted);
-        modelBuilder.Entity<UserTaskList>().HasQueryFilter(task => !task.IsDeleted);
+        modelBuilder.Entity<UserTask>().Property(list => list.IsDeleted).HasColumnName("IsDeleted");
+        modelBuilder.Entity<UserTask>().Property(list => list.IsCompleted).HasColumnName("IsCompleted");
+        modelBuilder.Entity<UserTask>().HasIndex(fields=>new { fields.Name, fields.OwnerUserId }).IsUnique().HasFilter("\"IsDeleted\" = false AND \"IsCompleted\" = false");
+
         
+        modelBuilder.Entity<UserTaskList>().HasQueryFilter(task => !task.IsDeleted);
+        modelBuilder.Entity<UserTaskList>().Property(list => list.IsDeleted).HasColumnName("IsDeleted");
+        modelBuilder.Entity<UserTaskList>().HasIndex(fields=>new { fields.Name, fields.OwnerUserId }).IsUnique().HasFilter("\"IsDeleted\" = false");
+
         base.OnModelCreating(modelBuilder);
     }
 }
