@@ -17,7 +17,7 @@ public static class EntityFrameworkExtensions
     public static IServiceCollection RegisterEntityFramework(this IServiceCollection services, IConfiguration configuration)
     {
         string? connectionString = configuration.GetConnectionString("Default");
-        services.AddDbContext<DataContext>(optionsBuilder => optionsBuilder.UseNpgsql(connectionString), ServiceLifetime.Singleton);
+        services.AddDbContext<DataContext>(optionsBuilder => optionsBuilder.UseNpgsql(connectionString), ServiceLifetime.Scoped);
         
         return services;
     }
