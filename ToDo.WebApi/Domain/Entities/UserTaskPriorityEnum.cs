@@ -7,7 +7,7 @@ namespace ToDo.WebApi.Domain.Entities;
 /// Приоритет задачи
 /// </summary>
 [DefaultValue(Medium)]
-public enum UserTaskPriority
+public enum UserTaskPriorityEnum
 {
     /// <summary>
     /// Низкий

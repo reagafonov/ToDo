@@ -1,3 +1,5 @@
+using ToDo.WebApi.Domain.Entities;
+
 namespace ToDo.WebApi.Models;
 
 /// <summary>
@@ -25,4 +27,9 @@ public class UserTaskUpdateModel
     /// Признак выполнения
     /// </summary>
     public string IsCompleted { get; set; }
+    
+    /// <summary>
+    /// Приоритет
+    /// </summary>
+    public string? Priority { get; set; }
 }

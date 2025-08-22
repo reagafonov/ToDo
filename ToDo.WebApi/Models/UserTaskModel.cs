@@ -32,7 +32,7 @@ public class UserTaskModel:BaseOutputModel
     /// <summary>
     /// Приоритет
     /// </summary>
-    public UserTaskPriority? Priority { get; set; }
+    public UserTaskPriorityEnum? Priority { get; set; }
 
     /// <summary>
     /// Дата создания

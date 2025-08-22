@@ -30,7 +30,7 @@ public class UserTaskSmallModel:BaseOutputModel
     /// <summary>
     /// Приоритет
     /// </summary>
-    public UserTaskPriority? Priority { get; set; }
+    public UserTaskPriorityEnum? Priority { get; set; }
     
     /// <summary>
     /// Порядок вывода
