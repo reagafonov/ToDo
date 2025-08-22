@@ -27,12 +27,10 @@ public class MapperProfile:Profile
             .ReverseMap();
 
         CreateMap<UserTaskUpdateDto, UserTask>()
-            .ForMember(userTask => userTask.TypeUserTaskList, expression => expression.Ignore())
             .ForMember(userTask => userTask.Created,
                 expression => expression.Ignore())
             .ForMember(userTask => userTask.CompleteDate,
-                expression => expression.Ignore())
-            .ForMember(userTask=>userTask.Id, expression=>expression.Ignore());
+                expression => expression.Ignore());
 
         CreateMap<UserTaskFilterDto, UserTaskFilterData>()
             .ForMember(userTaskFilter => userTaskFilter.Id, expression => expression.Ignore())

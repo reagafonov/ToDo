@@ -36,10 +36,11 @@ public interface IUserTaskService
     /// <summary>
     /// Редактирование задачи
     /// </summary>
+    /// <param name="id">Идентификатор</param>
     /// <param name="dto">Отредактированные данные задачи</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns></returns>
-    Task EditAsync(UserTaskUpdateDto dto, CancellationToken cancellationToken);
+    Task EditAsync(Guid id, UserTaskUpdateDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Пометка задачи как выполненой

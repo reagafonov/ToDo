@@ -93,8 +93,7 @@ public class TaskController(IUserTaskService userTaskService, IMapper mapper, IU
     {
         UserTaskUpdateDto? dto = mapper.Map<UserTaskUpdateDto>(userTaskModel);
         dto.OwnerUserId = await userService.GetCurrentUserIdAsync(User);
-        dto.Id = id;
-        await userTaskService.EditAsync(dto, cancellationToken);
+        await userTaskService.EditAsync(id, dto, cancellationToken);
     }
 
     /// <summary>

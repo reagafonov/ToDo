@@ -90,16 +90,26 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
     /// <summary>
     /// Редактирование задачи
     /// </summary>
+    /// <param name="id">Идентификатор</param>
     /// <param name="dto">Отредактированные данные задачи</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns></returns>
-    public async Task EditAsync(UserTaskUpdateDto dto, CancellationToken cancellationToken)
+    public async Task EditAsync(Guid id, UserTaskUpdateDto dto, CancellationToken cancellationToken)
     {
-        UserTask? userTask = await repository.GetAsync(dto.Id, cancellationToken);
+        UserTask? userTask = await repository.GetAsync(id, cancellationToken);
+        
         if (userTask == null)
             throw new KeyNotFoundException();
+        
         mapper.Map(dto, userTask);
+        
+        SetCompletedDate(userTask); 
+        
+        if (userTask is { IsCompleted: true, CompleteDate: null })
+            userTask.CompleteDate = DateTime.UtcNow;
+        
         await repository.UpdateAsync(userTask, cancellationToken);
+        
         await repository.SaveChangesAsync(cancellationToken);
     }
 
@@ -121,12 +131,21 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
             return;
         
         userTaskDto.IsCompleted = isCompleted;
-        userTaskDto.CompleteDate = isCompleted ? DateTime.Now : null; 
+        
         mapper.Map(userTaskDto, userTask);
+        
+        SetCompletedDate(userTask); 
         
         await repository.UpdateAsync(userTask, cancellationToken);
         
         await repository.SaveChangesAsync(cancellationToken);
+    }
+
+    private void SetCompletedDate(UserTask userTask)
+    {
+        var dto = mapper.Map<UserTaskDto>(userTask);
+        dto.CompleteDate = dto.IsCompleted ? DateTime.Now : null;
+        mapper.Map(dto, userTask);
     }
 
     /// <summary>

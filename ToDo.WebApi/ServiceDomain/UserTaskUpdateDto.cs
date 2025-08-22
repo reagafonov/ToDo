@@ -42,8 +42,4 @@ public class UserTaskUpdateDto
     /// </summary>
     public UserTaskPriority? Priority { get; set; }
 
-    /// <summary>
-    /// Идкнтификатолр
-    /// </summary>
-    public Guid Id { get; set; }
 }
