@@ -91,7 +91,7 @@ public class TaskController(IUserTaskService userTaskService, IMapper mapper, IU
     [HttpPut("{id:guid}")]
     public async Task UpdateAsync([FromRoute]Guid id, [FromBody] UserTaskUpdateModel userTaskModel, CancellationToken cancellationToken)
     {
-        UserTaskDto? dto = mapper.Map<UserTaskDto>(userTaskModel);
+        UserTaskUpdateDto? dto = mapper.Map<UserTaskUpdateDto>(userTaskModel);
         dto.OwnerUserId = await userService.GetCurrentUserIdAsync(User);
         dto.Id = id;
         await userTaskService.EditAsync(dto, cancellationToken);

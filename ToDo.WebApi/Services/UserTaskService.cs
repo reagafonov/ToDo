@@ -90,15 +90,15 @@ public class UserTaskService(IRepository<UserTask, UserTaskFilterData> repositor
     /// <summary>
     /// Редактирование задачи
     /// </summary>
-    /// <param name="userTaskDto">Отредактированные данные задачи</param>
+    /// <param name="dto">Отредактированные данные задачи</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns></returns>
-    public async Task EditAsync(UserTaskDto userTaskDto, CancellationToken cancellationToken)
+    public async Task EditAsync(UserTaskUpdateDto dto, CancellationToken cancellationToken)
     {
-        UserTask? userTask = await repository.GetAsync(userTaskDto.Id, cancellationToken);
+        UserTask? userTask = await repository.GetAsync(dto.Id, cancellationToken);
         if (userTask == null)
             throw new KeyNotFoundException();
-        mapper.Map(userTaskDto, userTask);
+        mapper.Map(dto, userTask);
         await repository.UpdateAsync(userTask, cancellationToken);
         await repository.SaveChangesAsync(cancellationToken);
     }

@@ -12,8 +12,10 @@ public class MappingProfile:Profile
     {
         CreateMap<UserTaskAddModel, UserTaskDto>();
 
-        CreateMap<UserTaskUpdateModel, UserTaskDto>()
-            .ForMember(dto=>dto.IsCompleted, opt=>opt.MapFrom(model=>  !string.IsNullOrWhiteSpace(model.IsCompleted) && model.IsCompleted.ToLower().Trim() != "false"));
+        CreateMap<UserTaskUpdateModel, UserTaskUpdateDto>()
+            .ForMember(dto => dto.IsCompleted,
+                opt => opt.MapFrom(model =>
+                    !string.IsNullOrWhiteSpace(model.IsCompleted) && model.IsCompleted.ToLower().Trim() != "false"));
 
         CreateMap<UserTaskDto, UserTaskModel>();
         

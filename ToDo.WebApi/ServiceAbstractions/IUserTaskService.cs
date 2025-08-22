@@ -32,14 +32,14 @@ public interface IUserTaskService
     /// <param name="userTaskDto">Данные задачи</param>
     /// <param name="cancellationToken">Токен отмены</param>
     Task<Guid> AddAsync(UserTaskDto userTaskDto, CancellationToken cancellationToken);
-    
+
     /// <summary>
     /// Редактирование задачи
     /// </summary>
-    /// <param name="userTaskDto">Отредактированные данные задачи</param>
+    /// <param name="dto">Отредактированные данные задачи</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns></returns>
-    Task EditAsync(UserTaskDto userTaskDto, CancellationToken cancellationToken);
+    Task EditAsync(UserTaskUpdateDto dto, CancellationToken cancellationToken);
 
     /// <summary>
     /// Пометка задачи как выполненой

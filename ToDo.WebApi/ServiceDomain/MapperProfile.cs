@@ -26,6 +26,14 @@ public class MapperProfile:Profile
                 expression => expression.MapFrom(dto=>dto.CompleteDate.HasValue ? dto.CompleteDate.Value.ToUniversalTime(): (DateTime?)null))
             .ReverseMap();
 
+        CreateMap<UserTaskUpdateDto, UserTask>()
+            .ForMember(userTask => userTask.TypeUserTaskList, expression => expression.Ignore())
+            .ForMember(userTask => userTask.Created,
+                expression => expression.Ignore())
+            .ForMember(userTask => userTask.CompleteDate,
+                expression => expression.Ignore())
+            .ForMember(userTask=>userTask.Id, expression=>expression.Ignore());
+
         CreateMap<UserTaskFilterDto, UserTaskFilterData>()
             .ForMember(userTaskFilter => userTaskFilter.Id, expression => expression.Ignore())
             .ReverseMap();
