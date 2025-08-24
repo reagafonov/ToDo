@@ -53,17 +53,20 @@ public class TodoFileController(IDocumentService fileService, ILogger<TodoFileCo
     /// </summary>
     /// <param name="taskId">Идентификатор задачи</param>
     /// <param name="file">Данные файла</param>
-    /// <param name="fileName">Имя файла</param>
+    /// <param name="name">Имя файла</param>
     /// <param name="cancellationToken">Токен отмены</param>
     [HttpPost("{taskId:guid}")]
-    public async Task<IActionResult> UploadAsync([FromRoute] Guid taskId, IFormFile file, [FromForm]string fileName, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> UploadAsync([FromRoute] Guid taskId, [FromForm]UploadFileRequestModel model, CancellationToken cancellationToken = default)
     {
+        var file = model.File;
+        var name = model.Name;
+        
         if (file == null || file.Length == 0)
             return BadRequest("Файл не выбран");
         
         UserTaskFileDto? dto = mapper.Map<UserTaskFileDto>(file);
         dto.UserTaskId = taskId;
-        dto.Name = fileName;
+        dto.Name = name;
         
         await using Stream stream = file.OpenReadStream();
         
