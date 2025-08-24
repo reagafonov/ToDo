@@ -55,7 +55,7 @@ public class UserTaskDto
     /// <summary>
     /// Приоритет
     /// </summary>
-    public UserTaskPriority? Priority { get; set; }
+    public UserTaskPriorityEnum? Priority { get; set; }
     
     /// <summary>
     /// Порядок вывода

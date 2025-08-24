@@ -36,4 +36,9 @@ public class UserTaskFilterData: BaseFilterData
     /// Набор идентификаторов
     /// </summary>
     public IEnumerable<Guid>? Ids { get; set; }
+    
+    ///<summary>
+    /// Только удаленные задачи
+    /// </summary>
+    public bool DeletedOnly { get; set; }
 }

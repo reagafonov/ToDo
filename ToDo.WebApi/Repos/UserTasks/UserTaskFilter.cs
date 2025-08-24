@@ -31,6 +31,9 @@ public class UserTaskFilter(IEnumerable<ICommonFilter<UserTask, UserTaskFilterDa
         
         if (filterData.Ids != null && filterData.Ids.Any())
             queryable = queryable.Where(t => filterData.Ids.Contains(t.Id));
+
+        if (filterData.DeletedOnly)
+            queryable = queryable.Where(t => t.IsDeleted);
         
         return base.Apply(filterData, queryable);
     }

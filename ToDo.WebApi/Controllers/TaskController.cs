@@ -36,6 +36,26 @@ public class TaskController(IUserTaskService userTaskService, IMapper mapper, IU
     }
     
     /// <summary>
+    /// Получает  удаленные задачи для списка
+    /// </summary>
+    /// <param name="listId">Идентификатор списка</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns>Задачи</returns>
+    [HttpGet("list/{listId:guid}/deleted")]
+    public async Task<List<UserTaskSmallModel>> GetDeletedUserTasks([FromRoute]Guid listId, CancellationToken cancellationToken)
+    {
+        UserTaskFilterDto userTaskFilterDto = new UserTaskFilterDto()
+        {
+            WithDeleted = true,
+            DeletedOnly = true,
+            UserTaskListId = listId
+        };
+        
+        List<UserTaskDto> allTasks = await userTaskService.GetUserTasksAsync(userTaskFilterDto, true, cancellationToken);
+        return mapper.Map<List<UserTaskSmallModel>>(allTasks);
+    }
+    
+    /// <summary>
     /// Получение данных задачи
     /// </summary>
     /// <param name="listId">Идентификатор списка</param>

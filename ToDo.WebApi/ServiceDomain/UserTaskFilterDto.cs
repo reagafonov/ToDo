@@ -35,4 +35,8 @@ public struct UserTaskFilterDto
     /// </summary>
     public bool WithDeleted { get; set; }
 
+    /// <summary>
+    /// Только удаленные задачи
+    /// </summary>
+    public bool DeletedOnly { get; set; }
 }
