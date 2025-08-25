@@ -66,6 +66,22 @@ public class TaskListController(IUserTaskListService service, IMapper mapper, IL
         
         return await service.AddUserTaskListAsync(dto, cancellationToken);
     }
+    
+    /// <summary>
+    /// Получение данных для списка по идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns>Данные списка задач</returns>
+    [HttpGet("{id}")]
+    public async Task<UserTaskListModel> AddTaskListAsync([FromRoute]Guid id, CancellationToken cancellationToken)
+    {
+        logger.LogInformation("Получение данных по идентификатору");
+        logger.LogDebug(id.ToString());
+
+        var userTaskListDto = await service.GetUserTaskAsync(id, cancellationToken);
+        return mapper.Map<UserTaskListModel>(userTaskListDto);
+    }
 
     /// <summary>
     /// Редактирование данных списка

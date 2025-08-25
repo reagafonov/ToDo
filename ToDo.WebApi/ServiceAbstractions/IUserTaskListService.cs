@@ -13,6 +13,14 @@ public interface IUserTaskListService
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task<List<UserTaskListDto>> GetUserTasksListsAsync(CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Получение списка задач по идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<UserTaskListDto> GetUserTaskAsync(Guid id, CancellationToken cancellationToken);
     
     /// <summary>
     /// Добавление списка

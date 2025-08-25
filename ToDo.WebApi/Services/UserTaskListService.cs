@@ -29,6 +29,18 @@ public class UserTaskListService(IRepository<UserTaskList, UserTaskListFilterDat
     }
 
     /// <summary>
+    /// Получение данных списка по идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns>Данные списка</returns>
+    public async Task<UserTaskListDto> GetUserTaskAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var fromBase = await userTaskListRepository.GetAsync(id, cancellationToken);
+        return mapper.Map<UserTaskListDto>(fromBase);
+    }
+
+    /// <summary>
     /// Добавление списка
     /// </summary>
     /// <param name="userTaskListDto">Данные списка</param>
