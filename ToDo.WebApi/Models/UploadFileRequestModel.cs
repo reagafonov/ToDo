@@ -11,9 +11,4 @@ public class UploadFileRequestModel
     /// Содержимое файла
     /// </summary>
     [FromForm(Name="file")] public IFormFile File { get; set; }
-    
-    /// <summary>
-    /// Название
-    /// </summary>
-    [FromForm(Name = "name")]public string Name { get; set; }
 }

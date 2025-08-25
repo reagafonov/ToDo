@@ -29,6 +29,22 @@ public class TodoFileController(IDocumentService fileService, ILogger<TodoFileCo
     }
     
     /// <summary>
+    /// Получение данных о файле по идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор</param>
+    /// <param name="cancellationToken">Токен отмены</param>
+    /// <returns>Данные о выбранном файле</returns>
+    [HttpGet("{id}")]
+    public async Task<UserTaskFileModel> GetFileInfoAsync([FromRoute]string id, CancellationToken cancellationToken = default)
+    {
+        logger.LogInformation("Получение файлов для задачи {taskId}", id);
+        
+        UserTaskFileSimpleDto result = await fileService.GetInfoByIdAsync(id, cancellationToken);
+        
+        return mapper.Map<UserTaskFileModel>(result);
+    }
+    
+    /// <summary>
     /// Загрузка файла по идентификатору
     /// </summary>
     /// <param name="id">Идентификатор файла</param>
@@ -59,7 +75,7 @@ public class TodoFileController(IDocumentService fileService, ILogger<TodoFileCo
     public async Task<IActionResult> UploadAsync([FromRoute] Guid taskId, [FromForm]UploadFileRequestModel model, CancellationToken cancellationToken = default)
     {
         var file = model.File;
-        var name = model.Name;
+        var name = file.FileName;
         
         if (file == null || file.Length == 0)
             return BadRequest("Файл не выбран");
