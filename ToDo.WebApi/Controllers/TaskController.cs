@@ -34,39 +34,44 @@ public class TaskController(IUserTaskService userTaskService, IMapper mapper, IU
         List<UserTaskDto> allTasks = await userTaskService.GetUserTasksAsync(userTaskFilterDto, true, cancellationToken);
         return mapper.Map<List<UserTaskSmallModel>>(allTasks);
     }
-    
+
     /// <summary>
     /// Получает  удаленные задачи для списка
     /// </summary>
     /// <param name="listId">Идентификатор списка</param>
+    /// <param name="textSearch">Фильтр задач</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Задачи</returns>
     [HttpGet("list/{listId:guid}/deleted")]
-    public async Task<List<UserTaskSmallModel>> GetDeletedUserTasks([FromRoute]Guid listId, CancellationToken cancellationToken)
+    public async Task<List<UserTaskSmallModel>> GetDeletedUserTasks([FromRoute]Guid listId, [FromQuery]string? textSearch, CancellationToken cancellationToken)
     {
+        
         UserTaskFilterDto userTaskFilterDto = new UserTaskFilterDto()
         {
             WithDeleted = true,
             DeletedOnly = true,
-            UserTaskListId = listId
+            UserTaskListId = listId,
+            TextSearch = textSearch
         };
         
         List<UserTaskDto> allTasks = await userTaskService.GetUserTasksAsync(userTaskFilterDto, true, cancellationToken);
         return mapper.Map<List<UserTaskSmallModel>>(allTasks);
     }
-    
+
     /// <summary>
     /// Получение данных задачи
     /// </summary>
     /// <param name="listId">Идентификатор списка</param>
+    /// <param name="textSearch">Фильтр задач</param>
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Данные задачи</returns>
     [HttpGet("list/{listId:guid}")]
-    public async Task<IEnumerable<UserTaskSmallModel?>> GetUserTasks([FromRoute]Guid listId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<UserTaskSmallModel?>> GetUserTasks([FromRoute]Guid listId, [FromQuery]string? textSearch, CancellationToken cancellationToken)
     {
         UserTaskFilterDto filter = new UserTaskFilterDto()
         {
-            UserTaskListId = listId
+            UserTaskListId = listId,
+            TextSearch = textSearch
         };
         List<UserTaskDto> userTasksAsync = await userTaskService.GetUserTasksAsync(filter, true, cancellationToken);
         return mapper.Map<List<UserTaskSmallModel>>(userTasksAsync);

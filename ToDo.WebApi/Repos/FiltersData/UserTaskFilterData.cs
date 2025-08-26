@@ -41,4 +41,9 @@ public class UserTaskFilterData: BaseFilterData
     /// Только удаленные задачи
     /// </summary>
     public bool DeletedOnly { get; set; }
+    
+    /// <summary>
+    /// Поиск по текстовым полям
+    /// </summary>
+    public string TextSearch { get; set; }
 }

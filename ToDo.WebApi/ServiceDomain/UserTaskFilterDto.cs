@@ -39,4 +39,9 @@ public struct UserTaskFilterDto
     /// Только удаленные задачи
     /// </summary>
     public bool DeletedOnly { get; set; }
+
+    /// <summary>
+    /// Поиск по текстовым полям
+    /// </summary>
+    public string TextSearch { get; set; }
 }
