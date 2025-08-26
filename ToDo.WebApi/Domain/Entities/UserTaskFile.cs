@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ToDo.WebApi.Abstractions;
 
@@ -22,10 +23,13 @@ public class UserTaskFile:BaseEntity
     /// <summary>
     /// Название
     /// </summary>
+    [Required(AllowEmptyStrings = false)]
+    [MaxLength(200)]
     public string Name { get; set; }
     
     /// <summary>
     /// Создержание
     /// </summary>
+    [MaxLength(length:16*1024*1024)]
     public byte[] Contents { get; set; }
 }

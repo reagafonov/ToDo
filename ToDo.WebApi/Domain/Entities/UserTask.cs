@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ToDo.WebApi.Abstractions;
 
@@ -11,11 +12,14 @@ public class UserTask:BaseEntity
     /// <summary>
     /// Название
     /// </summary>
+    [Required(AllowEmptyStrings = false)]
+    [StringLength(100)]
     public string Name { get; set; }
 
     /// <summary>
     /// Описание
     /// </summary>
+    [StringLength(1000)]
     public string? Description { get; set; }
 
     /// <summary>
@@ -47,5 +51,5 @@ public class UserTask:BaseEntity
     /// <summary>
     /// Приоритет
     /// </summary>
-    public UserTaskPriorityEnum? Priority { get; set; }
+    public UserTaskPriorityEnum? Priority { get; set; } = UserTaskPriorityEnum.Medium;
 }

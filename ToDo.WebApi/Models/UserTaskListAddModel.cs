@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using ToDo.WebApi.Domain.Entities;
 
 namespace ToDo.WebApi.Models;
@@ -11,15 +12,16 @@ public record UserTaskListAddModel
     /// Имя
     /// </summary>
     /// <remarks>Обязательно</remarks>
+    [Required(ErrorMessage = "Не задано имя списка")]
     public required string Name { get; set; }
     
     /// <summary>
     /// Тип сортировки
     /// </summary>
-    public string OrderType { get; set; }
+    public string? OrderType { get; set; }
     
     /// <summary>
     /// Направление сортировки
     /// </summary>
-    public string OrderDirection { get; set; }
+    public string? OrderDirection { get; set; }
 }

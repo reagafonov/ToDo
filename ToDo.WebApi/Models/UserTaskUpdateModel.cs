@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using ToDo.WebApi.Domain.Entities;
 
 namespace ToDo.WebApi.Models;
@@ -11,11 +12,13 @@ public class UserTaskUpdateModel
     /// Имя
     /// </summary>
     /// <remarks>Обязательно</remarks>
+    [MaxLength(100,ErrorMessage = "Длина имени не должна превышать 100")]
     public required string Name { get; init; }
 
     /// <summary>
     /// Описание
     /// </summary>
+    [MaxLength(1000,ErrorMessage = "Длина описания не должна превышать 1000")]
     public string? Description { get; init; }
     
     /// <summary>
