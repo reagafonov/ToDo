@@ -74,7 +74,7 @@ public class TaskListController(IUserTaskListService service, IMapper mapper, IL
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Данные списка задач</returns>
     [HttpGet("{id}")]
-    public async Task<UserTaskListModel> AddTaskListAsync([FromRoute]Guid id, CancellationToken cancellationToken)
+    public async Task<UserTaskListModel> GetTaskListAsync([FromRoute]Guid id, CancellationToken cancellationToken)
     {
         logger.LogInformation("Получение данных по идентификатору");
         logger.LogDebug(id.ToString());

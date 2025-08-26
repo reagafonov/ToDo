@@ -16,10 +16,10 @@ public record UserTaskListAddModel
     /// <summary>
     /// Тип сортировки
     /// </summary>
-    public UserListOrderTypeEnum OrderType { get; set; }
+    public string OrderType { get; set; }
     
     /// <summary>
     /// Направление сортировки
     /// </summary>
-    public OrderDirectionEnum OrderDirection { get; set; }
+    public string OrderDirection { get; set; }
 }
