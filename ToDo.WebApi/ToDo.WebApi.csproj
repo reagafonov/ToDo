@@ -34,6 +34,13 @@
 
     <ItemGroup>
       <Folder Include="Arch\" />
+      <Folder Include="EF\Arch\" />
+      <Folder Include="EF\WebApi\" />
+      <Folder Include="Keycloak\WebApi\" />
+      <Folder Include="Mongo\Arch\" />
+      <Folder Include="Mongo\WebApi\" />
+      <Folder Include="Serilog\WebApi\" />
+      <Folder Include="Swagger\WebApi\" />
       <Folder Include="WebApi\" />
     </ItemGroup>
 

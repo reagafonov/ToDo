@@ -96,3 +96,4 @@
 /Users/romanagafonov/_To_Do_/ToDo/ToDo.Test/obj/Debug/net8.0/ToDo.Test.pdb
 /Users/romanagafonov/_To_Do_/ToDo/ToDo.Test/obj/Debug/net8.0/ToDo.Test.genruntimeconfig.cache
 /Users/romanagafonov/_To_Do_/ToDo/ToDo.Test/obj/Debug/net8.0/ref/ToDo.Test.dll
+/Users/romanagafonov/_To_Do_/ToDo/ToDo.Test/obj/Debug/net8.0/ToDo.Test.sourcelink.json
